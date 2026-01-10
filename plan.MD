@@ -17,7 +17,7 @@
     - `src/services/`
     - `src/hooks/`
     - `src/types/`
-- [ ] Creare `src/types/index.tsx`:
+- [ ] Creare `src/types/index.ts`:
     - [ ] Definire alias: `type UUID = string`, `type Timestamp = number`, `type HypixelRank = "VIP" | "MVP" | "NONE" | ...`
     - [ ] Utility: `type Optional<T> = T | null`, `type Loading<T> = { isLoading: boolean; data?: T }`
 - [ ] TODO del giorno: progetto compila senza errori, struttura base pronta.
