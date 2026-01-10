@@ -8,6 +8,7 @@ export interface HypixelApiResponse<T> {
 
 export interface PlayerApiResponse{
     success: boolean;
+    cause?: string;
     player: Player;
 }
 export interface ProfileApiResponse{
