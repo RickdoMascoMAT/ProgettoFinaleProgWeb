@@ -1,21 +1,24 @@
 import {usePlayer} from "../hooks/usePlayer.ts";
+import {PlayerCard} from "../components/PlayerCard.tsx";
+import {useProfiles} from "../hooks/useProfiles.tsx";
 
 export function ProfilePage() {
     const uuid = localStorage.getItem('selectedPlayerUUID');
-    console.log('UUID recuperato:', uuid); // Aggiungi questo per debug
-    const {data: player, isLoading, error} = usePlayer(uuid || '');
+    const {data: player, isLoading: playerLoading, error: playerError} = usePlayer(uuid || '');
+    const {data: profiles, isLoading: profilesLoading, error: profilesError} = useProfiles(uuid || '');
 
-    if (isLoading) return <p>Caricamento...</p>;
-    if (error) return <p>Errore: {error.message}</p>;
+
+    if (playerLoading || profilesLoading) return <p>Caricamento...</p>;
+    if (playerError) return <p>Errore player: {playerError.message}</p>;
+    if (profilesError) return <p>Errore profili: {profilesError.message}</p>;
+
+    const selectedProfile = profiles?.find(p => p.selected);
 
     return (
         <>
             <h1>Statistiche Player</h1>
             {player ? (
-                <div>
-                    <p>Username: {player.displayname}</p>
-                    <p>UUID: {uuid}</p>
-                </div>
+                <PlayerCard player={player} profile={selectedProfile} />
             ) : (
                 <p>Nessun dato player disponibile.</p>
             )
