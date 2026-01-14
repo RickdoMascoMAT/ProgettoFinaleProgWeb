@@ -2,20 +2,19 @@ import {useState} from "react";
 import {getUUID} from "../services/minecraftAPI.ts";
 import {useApiKey} from "../hooks/useApiKey.ts";
 import { useEffect } from "react";
+import ErrorMessage from "../components/ErrorMessage.tsx";
+import SuccessMessage from "../components/SuccessMessage.tsx";
 
 
 export function HomePage() {
     const [username, setUsername] = useState(``);
-    const [apiKey, setApiKey] = useState('');
+    const {setApiKey: saveApiKey, getApiKey} = useApiKey();
+    const savedKey = getApiKey();
+    const [apiKey, setApiKey] = useState(savedKey ? '**************' : '');
+    const [isApiKeyModified, setIsApiKeyModified] = useState(false);
     const [APIMessage, setAPIMessage] = useState('');
     const [usernameMessage, setUsernameMessage] = useState('');
-    const {setApiKey: saveApiKey, getApiKey} = useApiKey();
 
-    useEffect(() => {
-        if (getApiKey()) {
-            setApiKey('**************'); // Mostra asterischi
-        }
-    }, [getApiKey]);
 
     useEffect(() => {
         if (APIMessage) {
@@ -33,9 +32,15 @@ export function HomePage() {
 
     const handleApiKeySubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        saveApiKey(apiKey === '**************' ? getApiKey() : apiKey);
-        setAPIMessage('API key salvata con successo!');
-        setApiKey('**************');
+        // Se la chiave è stata modificata, salva il nuovo valore, altrimenti mantieni quella esistente
+        if (isApiKeyModified && apiKey !== '**************') {
+            saveApiKey(apiKey);
+            setAPIMessage('API key salvata con successo!');
+            setApiKey('**************');
+            setIsApiKeyModified(false);
+        } else if (!isApiKeyModified) {
+            setAPIMessage('API key già salvata');
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -56,21 +61,39 @@ export function HomePage() {
             <form onSubmit={handleApiKeySubmit}>
                 <h2>Inserisci API-key</h2>
                 <p>Necessaria per funzionamento di certe funzionalità (WIP su dati mockup per display funzionalità pure senza key)</p>
+                <div style={{display: 'flex', alignItems: 'center'}}>
                 <input
                     type="password"
                     placeholder="Inserisci la tua API-key"
                     value={apiKey}
-                    onChange={(e) => setApiKey(e.target.value)}
+                    onChange={(e) => {
+                        setApiKey(e.target.value);
+                        setIsApiKeyModified(true);
+                    }}
+                    onFocus={() => {
+                        // Quando l'utente fa focus sul campo, puliscilo se mostra asterischi
+                        if (apiKey === '**************') {
+                            setApiKey('');
+                        }
+                    }}
                 />
                 <button type="submit">Salva API Key</button>
-                {APIMessage && <p style={{ color: 'green' }}>{APIMessage}</p>}
+                {APIMessage && <SuccessMessage message={APIMessage} />}
+                </div>
             </form>
             <hr/>
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Inserisci username" value={username} onChange={(e)=> setUsername(e.target.value)}/>
-                <button type="submit">Cerca</button>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <input type="text" placeholder="Inserisci username" value={username} onChange={(e)=> setUsername(e.target.value)}/>
+                    <button type="submit">Cerca</button>
+                    {usernameMessage && usernameMessage.includes('successo') ? (
+                        <SuccessMessage message={usernameMessage} />
+                    ) : (
+                        <ErrorMessage message={usernameMessage} />
+                    )}
+                </div>
             </form>
-            {usernameMessage && <p style={{ color: usernameMessage.includes('successo') ? 'green' : 'red' }}>{usernameMessage}</p>}
+
         </>
     );
 }

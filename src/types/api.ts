@@ -1,4 +1,7 @@
-import type {Player, SkyblockProfile} from "./player.ts";
+import type {Player} from "./player";
+import type {ProfileElement} from "./profiles";
+import type {AuctionsRoot} from "./auctions";
+import type {BazaarRoot} from "./bazaar";
 
 export interface HypixelApiResponse<T> {
     success: boolean;
@@ -13,5 +16,9 @@ export interface PlayerApiResponse{
 }
 export interface ProfileApiResponse{
     success: boolean;
-    profiles: SkyblockProfile[];
+    profiles: ProfileElement[];
 }
+
+export type AuctionsApiResponse = AuctionsRoot;
+
+export type BazaarApiResponse = BazaarRoot;

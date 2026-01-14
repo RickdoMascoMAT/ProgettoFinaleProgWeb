@@ -40,3 +40,27 @@
 .read-the-docs {
   color: #888;
 }
+
+.error-message {
+    color: red;
+    padding: 10px;
+    border: 1px solid red;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.error-message:empty {
+    display: none;
+}
+
+.success-message {
+    color: limegreen;
+    padding: 10px;
+    border: 1px solid limegreen;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.success-message:empty {
+    display: none;
+}
