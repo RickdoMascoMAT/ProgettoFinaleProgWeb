@@ -1,7 +1,7 @@
-import type {UUID} from "../types";
+import type {UUID} from "../types/index";
 import {useQuery} from "@tanstack/react-query";
-import type {ProfileApiResponse} from "../types/api.ts";
-import {get} from "../services/hypixelAPI.ts";
+import type {ProfileApiResponse} from "../types/api";
+import {get} from "../services/hypixelAPI";
 
 export function useProfiles(uuid: UUID){
     return useQuery({

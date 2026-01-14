@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "download:hypixel": "ts-node src/downloadHypixel.ts",
+    "gen:ts": "node scripts/generate-types.cjs",
+    "hypixel:all": "npm run download:hypixel && npm run gen:ts"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.18",
@@ -29,12 +32,15 @@
     "@types/styled-components": "^5.1.36",
     "@vitejs/plugin-react": "^5.1.1",
     "autoprefixer": "^10.4.23",
+    "dotenv": "^17.2.3",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "postcss": "^8.5.6",
+    "quicktype": "^23.2.6",
     "tailwindcss": "^4.1.18",
+    "ts-node": "^10.9.2",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4"
