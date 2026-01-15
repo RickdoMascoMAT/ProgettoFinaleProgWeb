@@ -1,58 +1,68 @@
-import type {PlayerCardProps} from "../types/player";
-import StatDisplay from "./StatDisplay";
-import {rankColors} from "../types/index";
+import type { PlayerCardProps } from '../types/player';
+import StatDisplay from './StatDisplay';
+
+const rankColors: Record<string, string> = {
+  NONE: '#AAAAAA',
+  VIP: '#00AA00',
+  VIP_PLUS: '#55FFFF',
+  MVP: '#55AAFF',
+  MVP_PLUS: '#55AAFF',
+  MVP_PLUS_PLUS: '#FFAA00',
+  YOUTUBER: '#FF5555',
+  OWNER: '#AA0000',
+  ADMIN: '#FF5555',
+  MODERATOR: '#AA00AA',
+};
 
 function getRank(player: PlayerCardProps['player']): string {
-    return player.newPackageRank || player.rank || 'NONE';
+  return player.newPackageRank || 'NONE';
 }
 
 function formatDate(timestamp: number): string {
-    return new Date(timestamp).toLocaleDateString('it-IT');
+  return new Date(timestamp).toLocaleDateString('it-IT');
 }
 
-function formatNumber(num: number): string {
-    return num.toLocaleString('it-IT');
+function formatNumber(num: number | undefined): string {
+  return num !== undefined ? num.toLocaleString('it-IT') : '0';
 }
 
-export function PlayerCard({player, profile } : PlayerCardProps){
-    const skinUrl = `https://minotar.net/avatar/${player.uuid}/64.png`;
-    const rank = getRank(player);
-    const rankColor = rankColors[rank] || rankColors['NONE'];
+export function PlayerCard({ player }: PlayerCardProps) {
+  const skinUrl = `https://minotar.net/avatar/${player.uuid}/64.png`;
+  const rank = getRank(player);
+  const rankColor = rankColors[rank] || rankColors['NONE'];
 
-    return(
-        <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '8px', marginBottom: '20px' }}>
-            <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
-                <img
-                    src={skinUrl}
-                    alt={`Faccia di ${player.displayname}`}
-                    style={{ width: '64px', height: '64px', borderRadius: '8px' }}
-                />
-                <div style={{ flex: 1 }}>
-                    <h2 style={{ margin: '0 0 10px 0' }}>{player.displayname}</h2>
-                    <p style={{ margin: '0', color: '#666', fontSize: '12px' }}>UUID: {player.uuid}</p>
+  return (
+    <div className="player-card">
+      <div className="player-card-header">
+        <img src={skinUrl} alt={`Faccia di ${player.displayname}`} className="player-avatar" />
+        <div className="player-info">
+          <h2 className="player-name">{player.displayname}</h2>
+          <p className="player-uuid">UUID: {player.uuid}</p>
 
-                    <div style={{ marginTop: '15px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
-                        <StatDisplay label="Rank" value={rank} color={rankColor} />
-                        <StatDisplay label="Network Level" value={Math.floor(player.networkExp / 10000).toString()} color="#55FFFF" />
-                        <StatDisplay label="Achievement Points" value={formatNumber(player.achievementPoints)} color="#FFD700" />
-                        <StatDisplay label="Karma" value={formatNumber(player.karma)} color="#FF69B4" />
-                    </div>
+          <div className="stats-section">
+            <StatDisplay label="Rank" value={rank} color={rankColor} />
+            <StatDisplay
+              label="Network Level"
+              value={Math.floor((player.networkExp || 0) / 10000).toString()}
+              color="#55FFFF"
+            />
+            <StatDisplay
+              label="Achievement Points"
+              value={formatNumber(player.achievementPoints)}
+              color="#FFD700"
+            />
+            <StatDisplay label="Karma" value={formatNumber(player.karma)} color="#FF69B4" />
+          </div>
 
-                    <div style={{ marginTop: '15px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
-                        <StatDisplay label="First Login" value={formatDate(player.firstLogin)} color="#888" />
-                        <StatDisplay label="Last Login" value={formatDate(player.lastLogin)} color="#888" />
-                        {player.lastLogout && (
-                            <StatDisplay label="Last Logout" value={formatDate(player.lastLogout)} color="#888" />
-                        )}
-                    </div>
-
-                    {profile && (
-                        <div style={{ marginTop: '15px', padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '4px' }}>
-                            <strong>Profilo SkyBlock:</strong> {profile.cute_name}
-                        </div>
-                    )}
-                </div>
-            </div>
+          <div className="stats-section">
+            <StatDisplay label="First Login" value={formatDate(player.firstLogin)} color="#888" />
+            <StatDisplay label="Last Login" value={formatDate(player.lastLogin)} color="#888" />
+            {player.lastLogout && (
+              <StatDisplay label="Last Logout" value={formatDate(player.lastLogout)} color="#888" />
+            )}
+          </div>
         </div>
-    )
+      </div>
+    </div>
+  );
 }

@@ -1,0 +1,19 @@
+# Ignore artifacts:
+build
+dist
+coverage
+node_modules
+
+# Ignore config files
+*.config.js
+*.config.ts
+*.config.cjs
+
+# Ignore data files
+data/
+
+# Ignore package files
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
