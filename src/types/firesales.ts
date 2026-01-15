@@ -1,4 +1,4 @@
 export interface FiresalesRoot {
-    success: boolean;
-    sales:   any[];
+  success: boolean;
+  sales: any[];
 }

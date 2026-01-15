@@ -42,25 +42,246 @@
 }
 
 .error-message {
-    color: red;
-    padding: 10px;
-    border: 1px solid red;
-    border-radius: 4px;
-    display: inline-block;
+  color: red;
+  padding: 10px;
+  border: 1px solid red;
+  border-radius: 4px;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  max-width: 300px;
+  background-color: #333;
 }
 
 .error-message:empty {
-    display: none;
+  display: none;
 }
 
 .success-message {
-    color: limegreen;
-    padding: 10px;
-    border: 1px solid limegreen;
-    border-radius: 4px;
-    display: inline-block;
+  color: limegreen;
+  padding: 10px;
+  border: 1px solid limegreen;
+  border-radius: 4px;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  max-width: 300px;
+  background-color: #333;
 }
 
 .success-message:empty {
-    display: none;
+  display: none;
+}
+
+body {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* ProfilePage styles */
+.favorite-button {
+  margin: 0px 10px 0px 10px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.favorite-button.favorite {
+  background-color: #ff4d4d;
+}
+
+.back-button {
+  margin-bottom: 40px;
+}
+
+.profile-stats {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.members-info {
+  margin: 5px 0;
+  color: #666;
+}
+
+.members-section {
+  margin-top: 15px;
+}
+
+/* HomePage styles */
+.search-form {
+  display: flex;
+  align-items: center;
+}
+
+.form-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #333;
+  color: #e0e0e0;
+  margin-right: 10px;
+}
+
+.form-button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.favorites-section {
+  margin-top: 20px;
+}
+
+.favorites-list {
+  list-style: none;
+  padding: 0;
+}
+
+.favorites-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+.favorite-face {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.favorite-name {
+  margin-right: 10px;
+  font-weight: bold;
+  flex: 1;
+  text-align: center;
+}
+
+.favorites-button {
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* PlayerCard styles */
+.player-card {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+.player-card-header {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.player-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+}
+
+.player-info {
+  flex: 1;
+}
+
+.player-name {
+  margin: 0 0 10px 0;
+  text-align: center;
+  position: relative;
+  left: -42px;
+}
+
+.player-uuid {
+  margin: 0;
+  color: #666;
+  font-size: 12px;
+  text-align: center;
+  position: relative;
+  left: -42px;
+}
+
+.stats-section {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+/* StatDisplay styles */
+.stat-display {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.stat-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+/* LoadingSpinner styles */
+.loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
 }

@@ -1,12 +1,11 @@
+import React from 'react';
+
 interface SuccessMessageProps {
-    message: string;
+  message: string;
 }
-const SuccessMessage: React.FC<SuccessMessageProps> = ({message}) => {
-    return (
-        <div className={"success-message"}>
-            {message}
-        </div>
-    );
+
+const SuccessMessage: React.FC<SuccessMessageProps> = ({ message }) => {
+  return <div className={'success-message'}>{message}</div>;
 };
 
 export default SuccessMessage;

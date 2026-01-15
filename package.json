@@ -10,7 +10,10 @@
     "preview": "vite preview",
     "download:hypixel": "ts-node src/downloadHypixel.ts",
     "gen:ts": "node scripts/generate-types.cjs",
-    "hypixel:all": "npm run download:hypixel && npm run gen:ts"
+    "hypixel:all": "npm run download:hypixel && npm run gen:ts",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.18",
@@ -34,10 +37,15 @@
     "autoprefixer": "^10.4.23",
     "dotenv": "^17.2.3",
     "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "postcss": "^8.5.6",
+    "prettier": "^3.8.0",
     "quicktype": "^23.2.6",
     "tailwindcss": "^4.1.18",
     "ts-node": "^10.9.2",

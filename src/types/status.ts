@@ -1,9 +1,9 @@
 export interface StatusRoot {
-    success: boolean;
-    uuid:    string;
-    session: Session;
+  success: boolean;
+  uuid: string;
+  session: Session;
 }
 
 export interface Session {
-    online: boolean;
+  online: boolean;
 }
