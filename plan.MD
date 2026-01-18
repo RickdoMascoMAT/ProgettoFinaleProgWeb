@@ -6,14 +6,14 @@
 
 ## Giorno 10 – Hook useAuctions + routing avanzato
 
-- [ ] Creare `src/hooks/useAuctions.ts`:
-  - [ ] Hook che usa React Query per auctions (può usare `auctionApi.ts` oppure chiamare direttamente).
-- [ ] Refactor `ProfilePage`:
-  - [ ] Usare parametro dinamico `:uuid` nell’URL.
-- [ ] Creare `src/pages/NotFoundPage.tsx`:
-  - [ ] Pagina 404 con link per tornare a Home.
-- [ ] Creare `src/hooks/useNavigationState.ts`:
-  - [ ] Permettere passaggio dati player da Home a Profile senza solo l’URL.
+- [x] Creare `src/hooks/useAuctions.ts`:
+  - [x] Hook per gestire auctions (implementato come `useProgressiveAuctions.ts` per caricamento progressivo).
+- [x] Refactor `ProfilePage`:
+  - [x] Usare parametro dinamico `:username` nell’URL (più user-friendly di :uuid).
+- [x] Creare `src/pages/NotFoundPage.tsx`:
+  - [x] Pagina 404 con link per tornare a Home.
+- [x] Creare `src/hooks/useNavigationState.ts`:
+  - [x] Permettere passaggio dati player da Home a Profile senza solo l’URL.
 
 ---
 
@@ -30,15 +30,15 @@
 
 ## Giorno 12 – Rifinitura FASE 2 + mini review
 
-- [ ] Controllare che i requisiti minimi siano coperti:
-  - [ ] Struttura base del progetto (components/, pages/).
-  - [ ] Routing con almeno 2 pagine (es. lista e dettaglio).
-  - [ ] TypeScript base (interfacce per oggetti API, props tipizzate).
-  - [ ] Una chiamata API utilizzando React Query con metodo GET e visualizzazione dati.
-- [ ] Controllare che i requisiti avanzati d’esame siano coperti:
-  - [ ] Almeno due chiamate API (una con async/await, una con React Query).
-  - [ ] Una chiamata POST mock.
-  - [ ] Routing avanzato con param dinamico e 404.
+- [x] Controllare che i requisiti minimi siano coperti:
+  - [x] Struttura base del progetto (components/, pages/).
+  - [x] Routing con almeno 2 pagine (es. lista e dettaglio).
+  - [x] TypeScript base (interfacce per oggetti API, props tipizzate).
+  - [x] Una chiamata API utilizzando React Query con metodo GET e visualizzazione dati.
+- [x] Controllare che i requisiti avanzati d’esame siano coperti:
+  - [x] Almeno due chiamate API (una con async/await, una con React Query).
+  - [x] Una chiamata POST mock.
+  - [x] Routing avanzato con param dinamico e 404.
   - [ ] TypeScript avanzato (alias, generics, union/intersection).
 - [ ] Sistemare nomi file, cartelle, commenti, per aumentare leggibilità.
 - [ ] Segnare chiaramente cosa è “esame‑critical” dentro il README (bozza).
@@ -80,11 +80,11 @@
 
 ## Giorno 16 – UI/UX migliorata
 
-- [ ] Progettazione dell'app
-- [ ] Componenti grafici
-- [ ] Routing
-- [ ] Chiamate API
-- [ ] Flusso dei dati
+- [x] Progettazione dell'app
+- [x] Componenti grafici
+- [x] Routing
+- [x] Chiamate API
+- [x] Flusso dei dati
 - [ ] Creare `src/components/ThemeProvider.tsx` e `src/hooks/useTheme.ts`:
   - [ ] Dark/light mode con persistenza.
 - [x] Creare `src/components/LoadingSkeleton.tsx` / `LoadingSpinner.tsx`:
@@ -129,7 +129,7 @@
   - [ ] Aggiungere `vercel.json` se serve.
 - [ ] Fare deploy e testare:
   - [ ] Home
-  - [ ] Profile con param uuid
+  - [ ] Profile con param username
   - [ ] BazaarPage (o altra pagina extra)
   - [ ] Gestione API key e mock.
 

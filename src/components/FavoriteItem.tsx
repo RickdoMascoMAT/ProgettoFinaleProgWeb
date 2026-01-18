@@ -1,7 +1,9 @@
 import { usePlayer } from '../hooks/usePlayer';
+import { useNavigationState } from '../hooks/useNavigationState';
 
 export function FavoriteItem({ uuid }: { uuid: string }) {
   const { data: player, isLoading, error } = usePlayer(uuid);
+  const { navigateToProfile } = useNavigationState();
 
   if (isLoading) return <li className="favorites-item">Caricamento...</li>;
   if (error) return <li className="favorites-item">Errore caricamento</li>;
@@ -17,8 +19,7 @@ export function FavoriteItem({ uuid }: { uuid: string }) {
       <span className="favorite-name">{player.displayname}</span>
       <button
         onClick={() => {
-          localStorage.setItem('selectedPlayerUUID', uuid);
-          window.location.href = '/profile';
+          navigateToProfile(player.displayname, { player });
         }}
         className="favorites-button"
       >
