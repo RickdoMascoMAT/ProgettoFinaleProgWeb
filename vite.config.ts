@@ -10,11 +10,6 @@ export default defineConfig({
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, ''),
             },
-            '/crafatar': {
-                target: 'https://crafatar.com',
-                changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/crafatar/, ''),
-            },
         },
     },
 })

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { PlayerApiResponse } from '../types/api.ts';
 import { get } from '../services/hypixelAPI';
 
-export function usePlayer(uuid: string) {
+export function usePlayer(uuid: string, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['player', uuid],
     queryFn: async () => {
@@ -10,6 +10,7 @@ export function usePlayer(uuid: string) {
       if (!response.success) throw new Error(response.cause || 'Errore API');
       return response.player;
     },
-    enabled: !!uuid,
+    enabled: options?.enabled !== undefined ? options.enabled : !!uuid,
+    retry: false,
   });
 }

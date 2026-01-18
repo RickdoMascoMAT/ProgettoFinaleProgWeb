@@ -7,6 +7,7 @@ import SuccessMessage from '../components/SuccessMessage.tsx';
 import { getFavorites } from '../services/favoritesApi';
 import { FavoriteItem } from '../components/FavoriteItem';
 import { handleApiError } from '../utils/apiErrorHandler';
+import { validateApiKey } from '../services/hypixelAPI';
 
 export function HomePage() {
   const [username, setUsername] = useState(``);
@@ -18,6 +19,7 @@ export function HomePage() {
   const [usernameMessage, setUsernameMessage] = useState('');
   const favorites = getFavorites();
   const [searchedUUID, setSearchedUUID] = useState<string | null>(null);
+  const [apiKeyWarning, setApiKeyWarning] = useState('');
 
   useEffect(() => {
     if (APIMessage) {
@@ -33,14 +35,34 @@ export function HomePage() {
     }
   }, [usernameMessage]);
 
-  const handleApiKeySubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const checkApiKeyValidity = async () => {
+      if (savedKey) {
+        const isValid = await validateApiKey(savedKey);
+        if (!isValid) {
+          setApiKeyWarning(
+            'La tua API key non è valida o è scaduta. Aggiornala per accedere ai dati reali.'
+          );
+        } else {
+          setApiKeyWarning('');
+        }
+      }
+    };
+    checkApiKeyValidity();
+  }, [savedKey]);
+
+  const handleApiKeySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Se la chiave è stata modificata, salva il nuovo valore, altrimenti mantieni quella esistente
     if (isApiKeyModified && apiKey !== '**************') {
-      saveApiKey(apiKey);
-      setAPIMessage('API key salvata con successo!');
-      setApiKey('**************');
-      setIsApiKeyModified(false);
+      const isValid = await validateApiKey(apiKey);
+      if (isValid) {
+        saveApiKey(apiKey);
+        setAPIMessage('API key salvata con successo!');
+        setApiKey('**************');
+        setIsApiKeyModified(false);
+      } else {
+        setAPIMessage('API key non valida. Controlla e riprova.');
+      }
     } else if (!isApiKeyModified) {
       setAPIMessage('API key già salvata');
     }
@@ -73,6 +95,14 @@ export function HomePage() {
         <div style={{ textAlign: 'left', marginBottom: '10px' }}>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
             API Key di Hypixel (opzionale per dati WIP):
+            <br />
+          </label>
+          <label style={{ display: 'block', marginBottom: '15px' }}>
+            Usa il&nbsp;
+            <a href="https://developer.hypixel.net" target="_blank" rel="noopener noreferrer">
+              sito Ufficiale
+            </a>{' '}
+            per richiedere l'API Key
           </label>
           <input
             type="password"
@@ -88,6 +118,7 @@ export function HomePage() {
             Salva API key
           </button>
           {APIMessage && <SuccessMessage message={APIMessage} />}
+          {apiKeyWarning && <ErrorMessage message={apiKeyWarning} />}
         </div>
       </form>
       <hr />
@@ -115,6 +146,11 @@ export function HomePage() {
           )}
         </div>
       </form>
+      <div style={{ textAlign: 'left', marginTop: '20px' }}>
+        <button onClick={() => (window.location.href = '/auctions')} className="form-button">
+          Visualizza Auctions House
+        </button>
+      </div>
       {searchedUUID && (
         <div className="searched-player-section" style={{ textAlign: 'left', marginTop: '20px' }}>
           <h3>Player Cercato</h3>

@@ -7,18 +7,34 @@ import StatDisplay from '../components/StatDisplay.tsx';
 import { useState } from 'react';
 import { addFavorite, removeFavorite, getFavorites } from '../services/favoritesApi';
 import { handleApiError } from '../utils/apiErrorHandler';
+import { useParams, useLocation } from 'react-router-dom';
+import { useUUID } from '../hooks/useUUID';
 
 export function ProfilePage() {
-  const uuid = localStorage.getItem('selectedPlayerUUID');
-  const { data: player, isLoading: playerLoading, error: playerError } = usePlayer(uuid || '');
+  const { username } = useParams<{ username: string }>();
+  const location = useLocation();
+  const passedPlayer = location.state?.player;
+  const { data: uuid, isLoading: uuidLoading, error: uuidError } = useUUID(username || '');
+  const {
+    data: player,
+    isLoading: playerLoading,
+    error: playerError,
+  } = usePlayer(uuid || '', {
+    enabled: !!uuid && !passedPlayer,
+  });
   const {
     data: profiles,
     isLoading: profilesLoading,
     error: profilesError,
-  } = useProfiles(uuid || '');
+  } = useProfiles(uuid || '', {
+    enabled: !!uuid,
+  });
   const [isFavorite, setIsFavorite] = useState(uuid ? getFavorites().includes(uuid) : false);
 
-  if (playerLoading || profilesLoading) return <LoadingSpinner />;
+  const currentPlayer = passedPlayer || player;
+
+  if (uuidLoading || playerLoading || profilesLoading) return <LoadingSpinner />;
+  if (uuidError) return <ErrorMessage message={handleApiError(uuidError)} />;
   if (playerError) return <ErrorMessage message={handleApiError(playerError)} />;
   if (profilesError) return <ErrorMessage message={handleApiError(profilesError)} />;
 
@@ -46,9 +62,9 @@ export function ProfilePage() {
           {isFavorite ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti'}
         </button>
       )}
-      {player ? (
+      {currentPlayer ? (
         <>
-          <PlayerCard player={player} profile={selectedProfile} />
+          <PlayerCard player={currentPlayer} profile={selectedProfile} />
 
           {selectedProfile && (
             <div className="profile-stats">
