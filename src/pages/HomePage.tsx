@@ -7,7 +7,7 @@ import SuccessMessage from '../components/SuccessMessage.tsx';
 import { getFavorites } from '../services/favoritesApi';
 import { FavoriteItem } from '../components/FavoriteItem';
 import { handleApiError } from '../utils/apiErrorHandler';
-import { validateApiKey } from '../services/hypixelAPI';
+import { validateApiKey } from '../services/hypixelApi';
 
 export function HomePage() {
   const [username, setUsername] = useState(``);
