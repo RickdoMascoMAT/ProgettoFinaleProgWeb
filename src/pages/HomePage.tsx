@@ -40,9 +40,7 @@ export function HomePage() {
       if (savedKey) {
         const isValid = await validateApiKey(savedKey);
         if (!isValid) {
-          setApiKeyWarning(
-            'La tua API key non è valida o è scaduta. Aggiornala per accedere ai dati reali.'
-          );
+          setApiKeyWarning('Your API key is invalid or expired. Update it to access real data.');
         } else {
           setApiKeyWarning('');
         }
@@ -57,14 +55,14 @@ export function HomePage() {
       const isValid = await validateApiKey(apiKey);
       if (isValid) {
         saveApiKey(apiKey);
-        setAPIMessage('API key salvata con successo!');
+        setAPIMessage('API key saved successfully!');
         setApiKey('**************');
         setIsApiKeyModified(false);
       } else {
-        setAPIMessage('API key non valida. Controlla e riprova.');
+        setAPIMessage('Invalid API key. Please check and try again.');
       }
     } else if (!isApiKeyModified) {
-      setAPIMessage('API key già salvata');
+      setAPIMessage('API key already saved');
     }
   };
 
@@ -74,10 +72,10 @@ export function HomePage() {
       const uuid = await getUUID(username);
       if (uuid) {
         localStorage.setItem('selectedPlayerUUID', uuid);
-        setUsernameMessage('UUID salvato con successo!');
+        setUsernameMessage('UUID saved successfully!');
         setSearchedUUID(uuid);
       } else {
-        setUsernameMessage('Username non trovato');
+        setUsernameMessage('Username not found');
       }
     } catch (error) {
       setUsernameMessage(handleApiError(error));
@@ -88,26 +86,26 @@ export function HomePage() {
     <>
       <h1>Hypixel SkyBlock Stats Tracker</h1>
       <p style={{ textAlign: 'left', marginBottom: '20px' }}>
-        Benvenuto! Inserisci la tua API key di Hypixel per accedere ai dati reali (opzionale per
-        dati WIP) e cerca un player per visualizzare le sue statistiche SkyBlock.
+        Welcome! Enter your Hypixel API key to access real data (optional for mockup data [WIP]) and
+        search for a player to view their SkyBlock statistics.
       </p>
       <form onSubmit={handleApiKeySubmit}>
         <div style={{ textAlign: 'left', marginBottom: '10px' }}>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-            API Key di Hypixel (opzionale per dati WIP):
+            Hypixel API Key (optional for mockup data [WIP]):
             <br />
           </label>
           <label style={{ display: 'block', marginBottom: '15px' }}>
-            Usa il&nbsp;
+            Use the&nbsp;
             <a href="https://developer.hypixel.net" target="_blank" rel="noopener noreferrer">
-              sito Ufficiale
+              Official website
             </a>{' '}
-            per richiedere l'API Key
+            to request the API Key
           </label>
           <input
             type="password"
             className="form-input"
-            placeholder="Inserisci la tua API key"
+            placeholder="Enter your API key"
             value={apiKey}
             onChange={(e) => {
               setApiKey(e.target.value);
@@ -115,7 +113,7 @@ export function HomePage() {
             }}
           />
           <button type="submit" className="form-button">
-            Salva API key
+            Save API key
           </button>
           {APIMessage && <SuccessMessage message={APIMessage} />}
           {apiKeyWarning && <ErrorMessage message={apiKeyWarning} />}
@@ -126,17 +124,17 @@ export function HomePage() {
         <div className="search-form" style={{ justifyContent: 'flex-start' }}>
           <div style={{ textAlign: 'left' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-              Username Minecraft:
+              Minecraft Username:
             </label>
             <input
               type="text"
               className="form-input"
-              placeholder="Es. Notch"
+              placeholder="E.g. Notch"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
             <button type="submit" className="form-button">
-              Cerca Player
+              Search Player
             </button>
           </div>
           {usernameMessage && usernameMessage.includes('successo') ? (
@@ -148,18 +146,18 @@ export function HomePage() {
       </form>
       <div style={{ textAlign: 'left', marginTop: '20px' }}>
         <button onClick={() => (window.location.href = '/auctions')} className="form-button">
-          Visualizza Auctions House
+          View Auctions House
         </button>
       </div>
       {searchedUUID && (
         <div className="searched-player-section" style={{ textAlign: 'left', marginTop: '20px' }}>
-          <h3>Player Cercato</h3>
+          <h3>Searched Player</h3>
           <FavoriteItem uuid={searchedUUID} />
         </div>
       )}
       {favorites.length > 0 && (
         <div className="favorites-section" style={{ textAlign: 'left' }}>
-          <h2>Player Preferiti</h2>
+          <h2>Favorite Players</h2>
           <ul className="favorites-list">
             {favorites.map((uuid) => (
               <FavoriteItem key={uuid} uuid={uuid} />

@@ -19,11 +19,11 @@ function getRank(player: PlayerCardProps['player']): string {
 }
 
 function formatDate(timestamp: number): string {
-  return new Date(timestamp).toLocaleDateString('it-IT');
+  return new Date(timestamp).toLocaleDateString('en-US');
 }
 
 function formatNumber(num: number | undefined): string {
-  return num !== undefined ? num.toLocaleString('it-IT') : '0';
+  return num !== undefined ? num.toLocaleString('en-US') : '0';
 }
 
 export function PlayerCard({ player }: PlayerCardProps) {
@@ -34,7 +34,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
   return (
     <div className="player-card">
       <div className="player-card-header">
-        <img src={skinUrl} alt={`Faccia di ${player.displayname}`} className="player-avatar" />
+        <img src={skinUrl} alt={`Face of ${player.displayname}`} className="player-avatar" />
         <div className="player-info">
           <h2 className="player-name">{player.displayname}</h2>
           <p className="player-uuid">UUID: {player.uuid}</p>

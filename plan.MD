@@ -1,63 +1,33 @@
-# Roadmap giorni 10-20 - Hypixel SkyBlock Stats Tracker
+# Roadmap giorni 1-9 - Hypixel SkyBlock Stats Tracker
 
 > Obiettivo: completare FASE 1 + FASE 2 + una parte selezionata di FASE 3, con tempo per README e deploy.
 
----
+## Giorno 1 – Rifinitura FASE 2 + mini review + requisiti mancanti esame
 
-## Giorno 10 – Hook useAuctions + routing avanzato
-
-- [x] Creare `src/hooks/useAuctions.ts`:
-  - [x] Hook per gestire auctions (implementato come `useProgressiveAuctions.ts` per caricamento progressivo).
-- [x] Refactor `ProfilePage`:
-  - [x] Usare parametro dinamico `:username` nell’URL (più user-friendly di :uuid).
-- [x] Creare `src/pages/NotFoundPage.tsx`:
-  - [x] Pagina 404 con link per tornare a Home.
-- [x] Creare `src/hooks/useNavigationState.ts`:
-  - [x] Permettere passaggio dati player da Home a Profile senza solo l’URL.
-
----
-
-## Giorno 11 – Hook generico + TypeScript avanzato
-
-- [ ] Creare `src/hooks/useApiData.ts`:
-  - [ ] Hook generico con `useApiData<T>` che wrappa React Query (o parte della logica).
-- [ ] Migliorare `src/types/advanced.ts`:
-  - [ ] Usare union, intersection e alias dove ha senso.
-- [ ] Creare `src/utils/typeGuards.ts`:
-  - [ ] Aggiungere 1–2 type guard semplici per response API (es. controllo campi essenziali).
-
----
-
-## Giorno 12 – Rifinitura FASE 2 + mini review
-
-- [x] Controllare che i requisiti minimi siano coperti:
-  - [x] Struttura base del progetto (components/, pages/).
-  - [x] Routing con almeno 2 pagine (es. lista e dettaglio).
-  - [x] TypeScript base (interfacce per oggetti API, props tipizzate).
-  - [x] Una chiamata API utilizzando React Query con metodo GET e visualizzazione dati.
-- [x] Controllare che i requisiti avanzati d’esame siano coperti:
-  - [x] Almeno due chiamate API (una con async/await, una con React Query).
-  - [x] Una chiamata POST mock.
-  - [x] Routing avanzato con param dinamico e 404.
-  - [ ] TypeScript avanzato (alias, generics, union/intersection).
+- [ ] Una chiamata POST mock (implementare una chiamata POST fittizia, es. per salvare preferenze o simulare invio dati).
 - [ ] Sistemare nomi file, cartelle, commenti, per aumentare leggibilità.
+- [ ] Scrivere README.md completo:
+  - [ ] Descrizione progetto e scopo.
+  - [ ] Stack usato (React, TS, React Query, ecc.).
+  - [ ] Istruzioni installazione ed esecuzione.
+  - [ ] Descrizione API Hypixel usata, gestione API key, mock.
+  - [ ] Elenco funzionalità completate (marcare quelle richieste dall’esame).
+  - [ ] Struttura del progetto (albero cartelle sintetico).
 - [ ] Segnare chiaramente cosa è “esame‑critical” dentro il README (bozza).
 
 ---
 
-## Giorno 13 – Sistema mock e gestione API key (inizio FASE 3)
+## Giorno 2 – Sistema mock e gestione API key (inizio FASE 3)
 
 - [ ] Creare `src/services/mockData.ts`:
   - [ ] Set di dati mock per player, profili, auctions.
-- [x] Creare `src/hooks/useApiKey.ts`:
-  - [x] Hook per leggere/salvare API key da `localStorage`.
 - [ ] Creare `src/contexts/ApiContext.tsx`:
   - [ ] Context per decidere se usare dati reali o mock.
 - [ ] Collegare la logica: se manca API key → usare mock.
 
 ---
 
-## Giorno 14 – UI per API key + prime pagine extra
+## Giorno 3 – UI per API key + prime pagine extra
 
 - [ ] Creare `src/components/ApiKeySetup.tsx`:
   - [ ] Form/modal per inserire/cancellare API key, con breve spiegazione.
@@ -67,7 +37,7 @@
 
 ---
 
-## Giorno 15 – Ottimizzazioni performance base
+## Giorno 4 – Ottimizzazioni performance base
 
 - [ ] Creare `src/hooks/usePagination.ts`:
   - [ ] Gestire paginazione semplice per auctions o bazaar.
@@ -78,25 +48,17 @@
 
 ---
 
-## Giorno 16 – UI/UX migliorata
+## Giorno 5 – UI/UX migliorata
 
-- [x] Progettazione dell'app
-- [x] Componenti grafici
-- [x] Routing
-- [x] Chiamate API
-- [x] Flusso dei dati
 - [ ] Creare `src/components/ThemeProvider.tsx` e `src/hooks/useTheme.ts`:
   - [ ] Dark/light mode con persistenza.
-- [x] Creare `src/components/LoadingSkeleton.tsx` / `LoadingSpinner.tsx`:
-  - [x] Skeleton per PlayerCard / liste auctions.
-- [x] Componenti UI creati: `ErrorMessage.tsx`, `SuccessMessage.tsx`, `ItemCard.tsx`, `PlayerCard.tsx`, `StatDisplay.tsx`, `FavoriteItem.tsx`
 - [ ] Applicare Tailwind per:
   - [ ] Layout responsive base (mobile/desktop).
   - [ ] Alcune animazioni leggere (hover, transitions).
 
 ---
 
-## Giorno 17 – Testing minimo e pulizia
+## Giorno 6 – Testing minimo e pulizia
 
 - [ ] Setup Vitest + React Testing Library (o simile).
 - [ ] Creare:
@@ -108,7 +70,7 @@
 
 ---
 
-## Giorno 18 – README e documentazione
+## Giorno 7 – README e documentazione
 
 - [ ] Scrivere `README.md` completo:
   - [ ] Descrizione progetto e scopo.
@@ -121,7 +83,7 @@
 
 ---
 
-## Giorno 19 – Deploy su Vercel
+## Giorno 8 – Deploy su Vercel
 
 - [ ] Preparare `.env` (senza committare la API key).
 - [ ] Configurare progetto per deploy su Vercel:
@@ -135,7 +97,7 @@
 
 ---
 
-## Giorno 20 – Buffer finale e prova “demo esame”
+## Giorno 9 – Buffer finale e prova “demo esame”
 
 - [ ] Usare il giorno come buffer per:
   - [ ] Fix bug dell’ultimo minuto.
@@ -376,7 +338,7 @@ style={{ justifyContent: 'flex-start' }}
 
 **Consiglio**: Eseguire refactoring SOLO se:
 
-1. ✅ Tutti i task dei giorni 10-20 sono completati
+1. ✅ Tutti i task dei giorni 1-9 sono completati
 2. ✅ README e deploy sono pronti
 3. ✅ Hai tempo extra prima della consegna
 4. ✅ Tutti i test funzionano correttamente

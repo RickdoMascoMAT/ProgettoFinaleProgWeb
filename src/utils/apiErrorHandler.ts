@@ -12,18 +12,18 @@ export function handleApiError(error: ApiError | Error | unknown): string {
     if (apiError.response) {
       const status = apiError.response.status;
       if (status === 401)
-        return 'API key mancante o non valida. Inserisci la tua API key nelle impostazioni.';
-      if (status === 429) return 'Troppe richieste. Riprova più tardi.';
-      if (status >= 500) return 'Errore del server. Riprova più tardi.';
-      return `Errore API: ${status}`;
+        return 'Missing or invalid API key. Please enter your API key in settings.';
+      if (status === 429) return 'Too many requests. Please try again later.';
+      if (status >= 500) return 'Server error. Please try again later.';
+      return `API error: ${status}`;
     } else if ('request' in apiError) {
-      return 'Errore di rete. Controlla la connessione internet.';
+      return 'Network error. Please check your internet connection.';
     }
   }
 
   if (error instanceof Error) {
-    return error.message || 'Errore sconosciuto.';
+    return error.message || 'Unknown error.';
   }
 
-  return 'Errore sconosciuto.';
+  return 'Unknown error.';
 }

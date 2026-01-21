@@ -42,9 +42,9 @@ export function ProfilePage() {
 
   return (
     <>
-      <h1>Statistiche Player</h1>
+      <h1>Player Statistics</h1>
       <button onClick={() => (window.location.href = '/')} className="form-button back-button">
-        Torna alla Home
+        Back to Home
       </button>
       {uuid && (
         <button
@@ -59,7 +59,7 @@ export function ProfilePage() {
           }}
           className={`favorite-button ${isFavorite ? 'favorite' : ''}`}
         >
-          {isFavorite ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti'}
+          {isFavorite ? 'Remove from favorites' : 'Add to favorites'}
         </button>
       )}
       {currentPlayer ? (
@@ -68,47 +68,47 @@ export function ProfilePage() {
 
           {selectedProfile && (
             <div className="profile-stats">
-              <h3>Statistiche SkyBlock - {selectedProfile.cute_name}</h3>
+              <h3>SkyBlock Statistics - {selectedProfile.cute_name}</h3>
               <div className="stats-grid">
                 <StatDisplay
-                  label="Profilo ID"
+                  label="Profile ID"
                   value={selectedProfile.profile_id.substring(0, 8) + '...'}
                   color="#888"
                 />
                 <StatDisplay
-                  label="Creato il"
+                  label="Created on"
                   value={
                     selectedProfile.created_at
-                      ? new Date(selectedProfile.created_at).toLocaleDateString('it-IT')
+                      ? new Date(selectedProfile.created_at).toLocaleDateString('en-US')
                       : 'N/A'
                   }
                   color="#888"
                 />
                 <StatDisplay
-                  label="Modalita"
+                  label="Mode"
                   value={selectedProfile.game_mode || 'Normal'}
                   color="#55FFFF"
                 />
                 {selectedProfile.banking && (
                   <StatDisplay
                     label="Bank Balance"
-                    value={`${(selectedProfile.banking.balance || 0).toLocaleString('it-IT')} coins`}
+                    value={`${(selectedProfile.banking.balance || 0).toLocaleString('en-US')} coins`}
                     color="#FFD700"
                   />
                 )}
               </div>
 
               <div className="members-section">
-                <strong>Membri profilo:</strong>
+                <strong>Profile members:</strong>
                 <p className="members-info">
-                  {Object.keys(selectedProfile.members).length} giocatore/i
+                  {Object.keys(selectedProfile.members).length} player(s)
                 </p>
               </div>
             </div>
           )}
         </>
       ) : (
-        <p>Nessun dato player disponibile.</p>
+        <p>No player data available.</p>
       )}
     </>
   );
