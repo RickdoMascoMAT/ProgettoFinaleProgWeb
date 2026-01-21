@@ -1,6 +1,6 @@
 import { useApiData } from './useApiData';
 import type { PlayerApiResponse } from '../types/api.ts';
-import { get } from '../services/hypixelAPI';
+import { get } from '../services/hypixelApi';
 
 export function usePlayer(uuid: string, options?: { enabled?: boolean }) {
   return useApiData({

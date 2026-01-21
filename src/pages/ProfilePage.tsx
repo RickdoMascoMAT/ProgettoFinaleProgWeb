@@ -1,6 +1,6 @@
 import { usePlayer } from '../hooks/usePlayer.ts';
 import { PlayerCard } from '../components/PlayerCard.tsx';
-import { useProfiles } from '../hooks/useProfiles.tsx';
+import { useProfiles } from '../hooks/useProfiles';
 import LoadingSpinner from '../components/LoadingSpinner.tsx';
 import ErrorMessage from '../components/ErrorMessage.tsx';
 import StatDisplay from '../components/StatDisplay.tsx';

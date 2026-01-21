@@ -5,7 +5,7 @@
 ## Giorno 1 – Rifinitura FASE 2 + mini review + requisiti mancanti esame
 
 - [ ] Una chiamata POST mock (implementare una chiamata POST fittizia, es. per salvare preferenze o simulare invio dati).
-- [ ] Sistemare nomi file, cartelle, commenti, per aumentare leggibilità.
+- [x] Sistemare nomi file, cartelle, commenti, per aumentare leggibilità (verificato: struttura già corretta).
 - [ ] Scrivere README.md completo:
   - [ ] Descrizione progetto e scopo.
   - [ ] Stack usato (React, TS, React Query, ecc.).

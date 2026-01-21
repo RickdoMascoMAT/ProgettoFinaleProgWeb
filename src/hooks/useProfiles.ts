@@ -1,7 +1,7 @@
 import type { UUID } from '../types/index';
 import { useApiData } from './useApiData';
 import type { ProfileApiResponse } from '../types/api';
-import { get } from '../services/hypixelAPI';
+import { get } from '../services/hypixelApi';
 
 export function useProfiles(uuid: UUID, options?: { enabled?: boolean }) {
   return useApiData({

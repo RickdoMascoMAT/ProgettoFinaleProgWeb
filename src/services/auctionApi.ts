@@ -1,4 +1,4 @@
-import { get } from './hypixelAPI';
+import { get } from './hypixelApi';
 import type { AuctionsRoot } from '../types/auctions';
 
 export async function getAuctions(page: number = 0): Promise<AuctionsRoot> {
