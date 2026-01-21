@@ -28,9 +28,16 @@ export function AuctionsPage() {
       ? auctionsData?.filter((auction) => auction.bin) || []
       : auctionsData?.filter((auction) => !auction.bin) || [];
 
+    const getPrice = (auction: any) =>
+      auction.bin
+        ? auction.starting_bid
+        : auction.bids.length > 0
+          ? auction.bids[auction.bids.length - 1].amount
+          : Infinity;
+
     return auctions
       .filter((auction) => auction.item_name.toLowerCase().includes(appliedFilter.toLowerCase()))
-      .sort((a, b) => a.starting_bid - b.starting_bid);
+      .sort((a, b) => getPrice(a) - getPrice(b));
   }, [auctionsData, appliedFilter, showBin]);
 
   const totalPages = Math.ceil(filteredAuctions.length / ITEMS_PER_PAGE);
@@ -54,14 +61,14 @@ export function AuctionsPage() {
     <div>
       <h1>Auctions</h1>
       <button onClick={() => (window.location.href = '/')} className="form-button back-button">
-        Torna alla Home
+        Back to Home
       </button>
       <div style={{ marginBottom: '20px' }}>
         <div style={{ marginBottom: '10px' }}>
           {lastUpdatedTimestamp && (
             <span>
-              Ultimo aggiornamento:{' '}
-              {new Date(lastUpdatedTimestamp).toLocaleTimeString('it-IT', {
+              Last update:{' '}
+              {new Date(lastUpdatedTimestamp).toLocaleTimeString('en-US', {
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',
@@ -70,7 +77,7 @@ export function AuctionsPage() {
           )}
           {timeUntilRefresh !== null && (
             <span style={{ marginLeft: '20px' }}>
-              Prossimo aggiornamento tra: {formatTime(timeUntilRefresh)}
+              Next update in: {formatTime(timeUntilRefresh)}
             </span>
           )}
         </div>
@@ -78,7 +85,7 @@ export function AuctionsPage() {
       <div style={{ marginBottom: '20px' }}>
         <input
           type="text"
-          placeholder="Cerca item (es. Hyperion, Aspect...)"
+          placeholder="Search items (e.g. Hyperion, Aspect...)"
           value={filterText}
           onChange={(e) => setFilterText(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -86,7 +93,7 @@ export function AuctionsPage() {
           style={{ marginRight: '10px', minWidth: '250px' }}
         />
         <button onClick={handleFilterApply} className="form-button">
-          Cerca
+          Search
         </button>
         <button
           onClick={() => {
@@ -96,31 +103,31 @@ export function AuctionsPage() {
           className={`form-button ${showBin ? 'active' : ''}`}
           style={{ marginLeft: '10px' }}
         >
-          {showBin ? 'Mostra solo BIN' : 'Mostra solo Non-BIN'}
+          {showBin ? 'Show BIN only' : 'Show Non-BIN only'}
         </button>
       </div>
       {error && <ErrorMessage message={error} />}
 
       {!appliedFilter ? (
         <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>
-          <p>Inserisci un termine di ricerca per visualizzare le auctions.</p>
-          <p>Ci sono {auctionsData?.length.toLocaleString('it-IT') || 0} auctions disponibili.</p>
+          <p>Enter a search term to view auctions.</p>
+          <p>There are {auctionsData?.length.toLocaleString('en-US') || 0} auctions available.</p>
         </div>
       ) : (
         <div>
           <h2>
-            {showBin ? 'Auctions BIN' : 'Auctions Non-BIN'} - Risultati:{' '}
-            {filteredAuctions.length.toLocaleString('it-IT')}
+            {showBin ? 'BIN Auctions' : 'Non-BIN Auctions'} - Results:{' '}
+            {filteredAuctions.length.toLocaleString('en-US')}
           </h2>
 
           {filteredAuctions.length === 0 ? (
-            <p>Nessuna auction trovata per "{appliedFilter}".</p>
+            <p>No auctions found for "{appliedFilter}".</p>
           ) : (
             <>
               <div style={{ marginBottom: '10px' }}>
                 <span>
-                  Pagina {currentPage} di {totalPages} ({paginatedAuctions.length} di{' '}
-                  {filteredAuctions.length} risultati)
+                  Page {currentPage} of {totalPages} ({paginatedAuctions.length} of{' '}
+                  {filteredAuctions.length} results)
                 </span>
               </div>
 
@@ -133,16 +140,23 @@ export function AuctionsPage() {
                   >
                     <h3>{auction.item_name}</h3>
                     <p>
-                      <strong>Prezzo:</strong> {auction.starting_bid.toLocaleString('it-IT')} coins
+                      <strong>Price:</strong>{' '}
+                      {(auction.bin
+                        ? auction.starting_bid
+                        : auction.bids.length > 0
+                          ? auction.bids[auction.bids.length - 1].amount
+                          : auction.starting_bid
+                      ).toLocaleString('en-US')}{' '}
+                      coins
                     </p>
                     <p>
-                      <strong>Scade il:</strong> {new Date(auction.end).toLocaleString('it-IT')}
+                      <strong>Ends on:</strong> {new Date(auction.end).toLocaleString('en-US')}
                     </p>
                     <p>
                       <strong>Auctioneer:</strong> {auction.auctioneer}
                     </p>
                     <p>
-                      <strong>ID Auction:</strong> {auction.uuid}
+                      <strong>Auction ID:</strong> {auction.uuid}
                     </p>
                   </div>
                 ))}
@@ -156,17 +170,17 @@ export function AuctionsPage() {
                   disabled={currentPage === 1}
                   className="form-button"
                 >
-                  ← Precedente
+                  ← Previous
                 </button>
                 <span>
-                  Pagina {currentPage} di {totalPages}
+                  Page {currentPage} of {totalPages}
                 </span>
                 <button
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
                   className="form-button"
                 >
-                  Successiva →
+                  Next →
                 </button>
               </div>
             </>

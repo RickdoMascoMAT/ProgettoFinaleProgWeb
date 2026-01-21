@@ -86,7 +86,7 @@ export function useProgressiveAuctions() {
       cacheRef.current = allAuctions;
       setData(allAuctions);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Errore sconosciuto');
+      setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setIsLoading(false);
     }

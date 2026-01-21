@@ -53,7 +53,6 @@ export interface Members {
   [uuid: string]: SkyblockProfileMember;
 }
 
-// Main SkyBlock Profile Member Interface
 export interface SkyblockProfileMember {
   player_id: string;
   profile: MemberProfile;
@@ -64,8 +63,6 @@ export interface SkyblockProfileMember {
   pets_data: PetsData;
   experimentation: Experimentation;
   events: Events;
-
-  // Optional advanced features
   rift?: Rift;
   accessory_bag_storage?: AccessoryBagStorage;
   mining_core?: MiningCore;
