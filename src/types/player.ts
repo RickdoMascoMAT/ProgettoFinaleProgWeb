@@ -3,7 +3,6 @@ export interface PlayerRoot {
   player: Player;
 }
 
-// Component Props
 export interface PlayerCardProps {
   player: Player;
   profile?: {

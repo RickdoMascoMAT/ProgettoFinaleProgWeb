@@ -16,11 +16,20 @@ export function AuctionsPage() {
   const [appliedFilter, setAppliedFilter] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
 
+  /**
+   * Formats milliseconds to a readable time string.
+   * @param {number} ms - Time in milliseconds
+   * @returns {string} Formatted time string (e.g., "45s")
+   */
   const formatTime = (ms: number) => {
     const seconds = Math.floor(ms / 1000);
     return `${seconds}s`;
   };
 
+  /**
+   * Memoized filtered and sorted auctions.
+   * Only computes when dependencies change for performance.
+   */
   const filteredAuctions = useMemo(() => {
     if (!appliedFilter) return [];
 
@@ -28,6 +37,10 @@ export function AuctionsPage() {
       ? auctionsData?.filter((auction) => auction.bin) || []
       : auctionsData?.filter((auction) => !auction.bin) || [];
 
+    /**
+     * Gets the current price of an auction.
+     * For BIN: starting bid. For regular: highest bid or Infinity if no bids.
+     */
     const getPrice = (auction: any) =>
       auction.bin
         ? auction.starting_bid

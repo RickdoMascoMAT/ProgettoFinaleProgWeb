@@ -5,6 +5,18 @@ import { HomePage } from './pages/HomePage.tsx';
 import { NotFoundPage } from './pages/NotFoundPage.tsx';
 import { AuctionsPage } from './pages/AuctionsPage.tsx';
 
+/**
+ * Main application component.
+ * Sets up the React Router configuration with all available routes.
+ *
+ * Routes:
+ * - '/' - Home page with player search and API key configuration
+ * - '/profile/:username' - Player profile page with SkyBlock statistics
+ * - '/auctions' - Auction house browser with search and filtering
+ * - '*' - 404 Not Found page for unmatched routes
+ *
+ * @returns {JSX.Element} The application with routing configured
+ */
 function App() {
   return (
     <>

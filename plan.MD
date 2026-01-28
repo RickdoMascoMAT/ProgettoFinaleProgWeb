@@ -1,367 +1,200 @@
-# Roadmap giorni 1-9 - Hypixel SkyBlock Stats Tracker
+# Piano Rimanente - Hypixel SkyBlock Stats Tracker
 
-> Obiettivo: completare FASE 1 + FASE 2 + una parte selezionata di FASE 3, con tempo per README e deploy.
-
-## Giorno 1 – Rifinitura FASE 2 + mini review + requisiti mancanti esame
-
-- [ ] Una chiamata POST mock (implementare una chiamata POST fittizia, es. per salvare preferenze o simulare invio dati).
-- [x] Sistemare nomi file, cartelle, commenti, per aumentare leggibilità (verificato: struttura già corretta).
-- [ ] Scrivere README.md completo:
-  - [ ] Descrizione progetto e scopo.
-  - [ ] Stack usato (React, TS, React Query, ecc.).
-  - [ ] Istruzioni installazione ed esecuzione.
-  - [ ] Descrizione API Hypixel usata, gestione API key, mock.
-  - [ ] Elenco funzionalità completate (marcare quelle richieste dall’esame).
-  - [ ] Struttura del progetto (albero cartelle sintetico).
-- [ ] Segnare chiaramente cosa è “esame‑critical” dentro il README (bozza).
+> Stato attuale: Tutti i requisiti dell'esame sono stati completati. Il progetto è pronto per la consegna.
 
 ---
 
-## Giorno 2 – Sistema mock e gestione API key (inizio FASE 3)
+## Requisiti Esame - COMPLETATI
 
-- [ ] Creare `src/services/mockData.ts`:
-  - [ ] Set di dati mock per player, profili, auctions.
-- [ ] Creare `src/contexts/ApiContext.tsx`:
-  - [ ] Context per decidere se usare dati reali o mock.
-- [ ] Collegare la logica: se manca API key → usare mock.
+### Requisiti Minimi (18 punti)
 
----
+- [x] Struttura base (`components/`, `pages/`)
+- [x] Routing con 2+ pagine (Home, Profile, Auctions, 404)
+- [x] TypeScript base (interfacce, props tipizzate)
+- [x] React Query GET con visualizzazione dati
 
-## Giorno 3 – UI per API key + prime pagine extra
+### Requisiti Avanzati
 
-- [ ] Creare `src/components/ApiKeySetup.tsx`:
-  - [ ] Form/modal per inserire/cancellare API key, con breve spiegazione.
-- [ ] Creare `src/pages/BazaarPage.tsx` (versione base):
-  - [ ] Lista semplice di pochi items con prezzi mock (non serve tutto il mega sistema).
-- [ ] Collegare `BazaarPage` al routing e a eventuale service `bazaarApi`.
+- [x] Struttura articolata (componenti riutilizzabili, tipi separati)
+- [x] Chiamate API: async/await + React Query + POST mock
+- [x] Gestione errori per ogni chiamata
+- [x] Routing avanzato (parametri dinamici, navigazione con dati, 404)
+- [x] TypeScript avanzato (interfacce multiple, alias, generics, union/intersection)
+- [x] Qualità codice (leggibilità, naming, struttura)
+- [x] UI/UX (design, componenti, loading states)
 
----
+### README
 
-## Giorno 4 – Ottimizzazioni performance base
-
-- [ ] Creare `src/hooks/usePagination.ts`:
-  - [ ] Gestire paginazione semplice per auctions o bazaar.
-- [ ] Creare `src/hooks/useDebounce.ts`:
-  - [ ] Usare in search bar di Home per evitare troppe chiamate.
-- [ ] Creare `src/utils/cacheConfig.ts`:
-  - [ ] Configurare `staleTime`/`cacheTime` globali di React Query in un unico punto.
-
----
-
-## Giorno 5 – UI/UX migliorata
-
-- [ ] Creare `src/components/ThemeProvider.tsx` e `src/hooks/useTheme.ts`:
-  - [ ] Dark/light mode con persistenza.
-- [ ] Applicare Tailwind per:
-  - [ ] Layout responsive base (mobile/desktop).
-  - [ ] Alcune animazioni leggere (hover, transitions).
+- [x] Descrizione e scopo
+- [x] Istruzioni installazione
+- [x] API utilizzate
+- [x] Credenziali/mock
+- [x] Struttura progetto
+- [x] Funzionalità completate
 
 ---
 
-## Giorno 6 – Testing minimo e pulizia
+## Task Opzionali (se hai tempo)
 
-- [ ] Setup Vitest + React Testing Library (o simile).
-- [ ] Creare:
-  - [ ] `src/components/__tests__/PlayerCard.test.tsx` (1–2 test semplici).
-  - [ ] `src/hooks/__tests__/usePlayer.test.tsx` (test mockato).
-- [ ] Pulizia finale:
-  - [ ] Rimuovere codice morto.
-  - [ ] Sistemare TODO non critici o commentarli.
+### 1. Deploy su Vercel/Netlify
 
----
+**Tempo stimato**: 30-60 min
 
-## Giorno 7 – README e documentazione
+```bash
+# Installa Vercel CLI
+npm i -g vercel
 
-- [ ] Scrivere `README.md` completo:
-  - [ ] Descrizione progetto e scopo.
-  - [ ] Stack usato (React, TS, React Query, ecc.).
-  - [ ] Istruzioni installazione ed esecuzione.
-  - [ ] Descrizione API Hypixel usata, gestione API key, mock.
-  - [ ] Elenco funzionalità completate (marcare quelle richieste dall’esame).
-  - [ ] Struttura del progetto (albero cartelle sintetico).
-- [ ] Aggiungere eventuali screenshot o GIF (opzionale).
-
----
-
-## Giorno 8 – Deploy su Vercel
-
-- [ ] Preparare `.env` (senza committare la API key).
-- [ ] Configurare progetto per deploy su Vercel:
-  - [ ] Controllare build script.
-  - [ ] Aggiungere `vercel.json` se serve.
-- [ ] Fare deploy e testare:
-  - [ ] Home
-  - [ ] Profile con param username
-  - [ ] BazaarPage (o altra pagina extra)
-  - [ ] Gestione API key e mock.
-
----
-
-## Giorno 9 – Buffer finale e prova “demo esame”
-
-- [ ] Usare il giorno come buffer per:
-  - [ ] Fix bug dell’ultimo minuto.
-  - [ ] Migliorare qualche parte di UI se c’è tempo.
-- [ ] Simulare la presentazione all’esame:
-  - [ ] Spiegare in 5–10 minuti:
-    - Struttura progetto.
-    - Chiamate API (GET + POST mock + async/await + React Query).
-    - Routing avanzato.
-    - TypeScript avanzato (alias, generics, union).
-    - Mock system e gestione API key.
-  - [ ] Controllare che il README abbia il link al deploy e al repository.
-
----
-
-## 🔄 REFACTORING - Codice Duplicato da Ottimizzare (Task Opzionale)
-
-> ⚠️ **NOTA**: Questi refactoring NON sono necessari per l'esame, ma migliorerebbero la qualità del codice.
-> Eseguire solo se c'è tempo dopo aver completato tutti i task obbligatori.
-
-### 1. **Hook Pattern Duplicato** - PRIORITÀ ALTA
-
-**Problema**: `usePlayer.ts` e `useProfiles.tsx` hanno la stessa struttura base
-
-```typescript
-// Pattern ripetuto in entrambi:
-return useQuery({
-  queryKey: [...],
-  queryFn: async () => {
-    const response = await get(...);
-    if (!response.success) throw new Error(...);
-    return response.data;
-  },
-  enabled: !!uuid,
-});
+# Deploy
+vercel
 ```
 
-**Soluzione Proposta**:
-
-- [ ] Creare `src/hooks/useHypixelQuery.ts` hook generico
-- [ ] Parametrizzare endpoint, queryKey, e tipo di ritorno con generics
-- [ ] Refactorare `usePlayer` e `useProfiles` per usare il nuovo hook
-- [ ] File da modificare: `usePlayer.ts`, `useProfiles.tsx`, `useAuctions.ts` (quando creato)
+- Crea account su vercel.com
+- Collega il repository GitHub
+- Imposta variabili d'ambiente se necessario
+- Aggiungi link deploy nel README
 
 ---
 
-### 2. **Gestione LocalStorage Duplicata** - PRIORITÀ MEDIA
+### 2. Sistema Mock Completo
 
-**Problema**: LocalStorage usato in modo sparso in diversi file
+**Tempo stimato**: 1-2 ore
+
+Crea `src/services/mockData.ts`:
 
 ```typescript
-// In HomePage.tsx:
-localStorage.setItem('selectedPlayerUUID', uuid);
-localStorage.getItem('selectedPlayerUUID');
-
-// In ProfilePage.tsx:
-localStorage.getItem('selectedPlayerUUID');
-
-// In FavoriteItem.tsx:
-localStorage.setItem('selectedPlayerUUID', uuid);
-
-// In favoritesApi.ts:
-localStorage.getItem('favorites');
-localStorage.setItem('favorites', ...);
-
-// In useApiKey.ts:
-localStorage.getItem('hypixelApiKey');
-localStorage.setItem('hypixelApiKey', key);
+export const mockPlayer = {
+  /* dati da data/player.json */
+};
+export const mockProfiles = {
+  /* dati da data/profiles.json */
+};
 ```
 
-**Soluzione Proposta**:
-
-- [ ] Creare `src/utils/localStorage.ts` con funzioni tipizzate
-- [ ] Definire chiavi come costanti: `STORAGE_KEYS = { UUID: '...', API_KEY: '...', FAVORITES: '...' }`
-- [ ] Creare funzioni generiche: `getItem<T>()`, `setItem<T>()`, `removeItem()`
-- [ ] Refactorare tutti i file che usano localStorage
-- [ ] File da modificare: `HomePage.tsx`, `ProfilePage.tsx`, `FavoriteItem.tsx`, `favoritesApi.ts`, `useApiKey.ts`
+Modifica gli hook per usare mock se manca API key.
 
 ---
 
-### 3. **Pattern di Navigazione Duplicato** - PRIORITÀ BASSA
+### 3. Dark/Light Mode
 
-**Problema**: Navigazione gestita in modo inconsistente
+**Tempo stimato**: 1-2 ore
 
-```typescript
-// In FavoriteItem.tsx:
-window.location.href = '/profile';
+- Crea `useTheme.ts` hook con localStorage
+- Usa Tailwind `dark:` classes
+- Aggiungi toggle button in HomePage
 
-// In ProfilePage.tsx:
-window.location.href = '/';
+---
+
+### 4. Testing Base
+
+**Tempo stimato**: 2-3 ore
+
+```bash
+npm install -D vitest @testing-library/react @testing-library/jest-dom
 ```
 
-**Soluzione Proposta**:
-
-- [ ] Usare `useNavigate()` di React Router invece di `window.location.href`
-- [ ] Creare `src/hooks/useNavigateToProfile.ts` per logica condivisa
-- [ ] Refactorare FavoriteItem e ProfilePage
-- [ ] File da modificare: `FavoriteItem.tsx`, `ProfilePage.tsx`
+Crea test semplici per PlayerCard e usePlayer.
 
 ---
 
-### 4. **Timeout Pattern per Messaggi** - PRIORITÀ BASSA
+### 5. Bazaar Page
 
-**Problema**: Pattern `useEffect` + `setTimeout` duplicato in HomePage
+**Tempo stimato**: 2-3 ore
 
-```typescript
-// Duplicato 2 volte in HomePage.tsx:
-useEffect(() => {
-  if (APIMessage) {
-    const timer = setTimeout(() => setAPIMessage(''), 3000);
-    return () => clearTimeout(timer);
-  }
-}, [APIMessage]);
-
-useEffect(() => {
-  if (usernameMessage) {
-    const timer = setTimeout(() => setUsernameMessage(''), 3000);
-    return () => clearTimeout(timer);
-  }
-}, [usernameMessage]);
-```
-
-**Soluzione Proposta**:
-
-- [ ] Creare `src/hooks/useAutoResetMessage.ts` hook personalizzato
-- [ ] Hook accetta: `(message, delay) => [message, setMessage]`
-- [ ] Refactorare HomePage per usare il nuovo hook
-- [ ] File da modificare: `HomePage.tsx`
+- Crea `src/pages/BazaarPage.tsx` con lista prodotti del Bazaar
+- Usa endpoint `GET /skyblock/bazaar` (non richiede API key)
+- Mostra prezzi buy/sell per ogni item
+- Aggiungi ricerca e ordinamento per prezzo
 
 ---
 
-### 5. **Formattazione Date/Numeri Duplicata** - PRIORITÀ BASSA
+### 6. Networth Calculator
 
-**Problema**: Funzioni utility duplicate in `PlayerCard.tsx` e `ProfilePage.tsx`
+**Tempo stimato**: 3-4 ore
 
-```typescript
-// In PlayerCard.tsx:
-function formatDate(timestamp: number): string {
-  return new Date(timestamp).toLocaleDateString('it-IT');
-}
-function formatNumber(num: number | undefined): string {
-  return num !== undefined ? num.toLocaleString('it-IT') : '0';
-}
-
-// In ProfilePage.tsx:
-new Date(selectedProfile.created_at)
-  .toLocaleDateString('it-IT')(selectedProfile.banking.balance || 0)
-  .toLocaleString('it-IT');
-```
-
-**Soluzione Proposta**:
-
-- [ ] Creare `src/utils/formatters.ts` con funzioni riutilizzabili
-- [ ] Esportare: `formatDate()`, `formatNumber()`, `formatCurrency()`
-- [ ] Refactorare PlayerCard e ProfilePage
-- [ ] File da modificare: `PlayerCard.tsx`, `ProfilePage.tsx`
+- Calcola il valore totale dell'inventario di un player
+- Usa i prezzi del Bazaar + Auction House per stimare il valore
+- Mostra breakdown per categoria (armor, weapons, accessories, etc.)
 
 ---
 
-### 6. **RankColors Duplicato** - PRIORITÀ BASSA
+### 7. Skills & Slayers Display
 
-**Problema**: `rankColors` oggetto definito sia in `types/index.ts` che in `PlayerCard.tsx`
+**Tempo stimato**: 2-3 ore
 
-```typescript
-// In types/index.ts:
-export const rankColors: Record<string, string> = { ... };
-
-// In PlayerCard.tsx (dopo fix):
-const rankColors: Record<string, string> = { ... };
-```
-
-**Soluzione Proposta**:
-
-- [ ] Rimuovere definizione locale da `PlayerCard.tsx`
-- [ ] Importare da `types/index.ts`
-- [ ] Considerare spostamento in `src/constants/ranks.ts` se serve espandere
-- [ ] File da modificare: `PlayerCard.tsx`
+- Nella ProfilePage, aggiungi sezione per mostrare:
+  - Livelli skills (Mining, Farming, Combat, etc.)
+  - Progressi Slayer (Zombie, Spider, Wolf, etc.)
+  - Dungeon stats (Catacombs level, classe preferita)
 
 ---
 
-### 7. **URL Minotar Avatar Duplicato** - PRIORITÀ BASSA
+### 8. Auction Notifications
 
-**Problema**: URL avatar costruito in 3 punti diversi
+**Tempo stimato**: 2-3 ore
 
-```typescript
-// In PlayerCard.tsx:
-const skinUrl = `https://minotar.net/avatar/${player.uuid}/64.png`;
-
-// In FavoriteItem.tsx:
-src={`https://minotar.net/avatar/${uuid}/32.png`}
-```
-
-**Soluzione Proposta**:
-
-- [ ] Creare `src/utils/minecraft.ts` con funzione `getMinotarAvatar(uuid, size)`
-- [ ] Opzionale: aggiungere altre utility Minecraft (colorCodes, etc.)
-- [ ] Refactorare PlayerCard e FavoriteItem
-- [ ] File da modificare: `PlayerCard.tsx`, `FavoriteItem.tsx`
+- Permetti all'utente di "watchare" un item
+- Mostra notifica quando un'asta con quell'item appare sotto un certo prezzo
+- Usa localStorage per salvare le watchlist
 
 ---
 
-### 8. **Inline Styles Sparsi** - PRIORITÀ MOLTO BASSA
+### 9. Player Comparison
 
-**Problema**: Style inline mescolati con classi CSS in HomePage e ProfilePage
+**Tempo stimato**: 3-4 ore
 
-```typescript
-// In HomePage.tsx e ProfilePage.tsx:
-style={{ textAlign: 'left', marginBottom: '20px' }}
-style={{ justifyContent: 'flex-start' }}
-```
-
-**Soluzione Proposta**:
-
-- [ ] Spostare tutti gli stili in `App.css` o file CSS dedicati
-- [ ] Usare solo classi CSS per consistenza
-- [ ] File da modificare: `HomePage.tsx`, `ProfilePage.tsx`, `ItemCard.tsx`
+- Permetti di confrontare 2 player side-by-side
+- Mostra differenze in skills, networth, collections
+- URL tipo `/compare/:player1/:player2`
 
 ---
 
-## 📊 Riepilogo Refactoring
+### 10. Collections Progress
 
-| Task                   | Priorità       | Impatto | File Coinvolti | Tempo Stimato |
-| ---------------------- | -------------- | ------- | -------------- | ------------- |
-| Hook Pattern Duplicato | 🔴 Alta        | Grande  | 3+ files       | 30-45 min     |
-| LocalStorage Duplicato | 🟡 Media       | Grande  | 5+ files       | 45-60 min     |
-| Navigazione Duplicata  | 🟢 Bassa       | Medio   | 2 files        | 15-20 min     |
-| Timeout Messaggi       | 🟢 Bassa       | Piccolo | 1 file         | 15-20 min     |
-| Formatters Duplicati   | 🟢 Bassa       | Medio   | 2 files        | 20-30 min     |
-| RankColors Duplicato   | 🟢 Bassa       | Piccolo | 1 file         | 5-10 min      |
-| URL Avatar Duplicato   | 🟢 Bassa       | Piccolo | 2 files        | 10-15 min     |
-| Inline Styles          | ⚪ Molto Bassa | Medio   | 3 files        | 30-40 min     |
+**Tempo stimato**: 2-3 ore
 
-**Tempo Totale Stimato**: 2.5 - 4 ore
+- Mostra le collections del player con progress bar
+- Indica quali sono complete e quali mancano
+- Ordina per % completamento
 
 ---
 
-## ✅ Quando Eseguire il Refactoring
+### 11. Responsive Design Migliorato
 
-**Consiglio**: Eseguire refactoring SOLO se:
+**Tempo stimato**: 1-2 ore
 
-1. ✅ Tutti i task dei giorni 1-9 sono completati
-2. ✅ README e deploy sono pronti
-3. ✅ Hai tempo extra prima della consegna
-4. ✅ Tutti i test funzionano correttamente
-
-**NON fare refactoring se:**
-
-- ❌ Mancano funzionalità obbligatorie
-- ❌ Ci sono bug da fixare
-- ❌ Il tempo stringe per la consegna
+- Ottimizza tutte le pagine per mobile
+- Usa Tailwind breakpoints (`sm:`, `md:`, `lg:`)
+- Testa su diversi screen sizes
 
 ---
 
-## Task extra (opzionali, se completati tutti i precedenti e tempo permette)
+### 12. Animations & Transitions
 
-- [ ] Librerie avanzate:
-  - [ ] Grafica: Shadcn/UI per componenti UI avanzati.
-  - [ ] State management: Zustand per gestione stato globale.
-  - [ ] Form avanzate: Formik o React Hook Form per form complessi.
-  - [ ] Validazione dati API: Zod per validazione input.
-  - [ ] Gestione cache avanzata sulle chiamate API.
-- [ ] Funzionalità avanzate:
-  - [ ] Ottimizzazioni API: Pagination avanzata, caching migliorato.
-  - [ ] Autenticazione avanzata: JWT, OAuth (se applicabile).
-  - [ ] WebSocket per aggiornamenti real-time.
-  - [ ] Pipeline CI/CD: GitHub Actions per deploy automatico.
-  - [ ] Testing avanzato: Coverage completa, test E2E.
+**Tempo stimato**: 1-2 ore
+
+- Aggiungi animazioni di caricamento più fluide
+- Transizioni tra pagine con Framer Motion
+- Hover effects sui componenti
+
+---
+
+## Suggerimenti per la Presentazione
+
+Quando presenti il progetto, evidenzia:
+
+1. **Struttura**: Mostra la cartella `src/` organizzata
+2. **TypeScript**: Apri `types/advanced.ts` per mostrare generics e union
+3. **React Query**: Mostra `usePlayer.ts` e come gestisce loading/error
+4. **POST Mock**: Mostra `saveUserPreferences` in `favoritesApi.ts`
+5. **Routing**: Naviga da Home → Profile mostrando il parametro `:username`
+6. **404**: Vai su un URL inesistente per mostrare NotFoundPage
+
+---
+
+## Checklist Finale Prima della Consegna
+
+- [ ] Build passa senza errori (`npm run build`)
+- [ ] Tutte le pagine funzionano (Home, Profile, Auctions, 404)
+- [ ] README completo con tutte le sezioni richieste
+- [ ] Repository GitHub pubblico o accessibile
+- [ ] (Opzionale) Link al deploy funzionante

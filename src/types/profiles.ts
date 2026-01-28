@@ -1,6 +1,3 @@
-// Hypixel SkyBlock Profiles API Types
-// Generated from API response and cleaned up with generic interfaces
-
 export interface ProfilesRoot {
   success: boolean;
   profiles: ProfileElement[];

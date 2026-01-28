@@ -1,9 +1,22 @@
 import axios from 'axios';
 
-//const BASE_URL = 'https://api.mojang.com';
-//uso un Proxy che durante il dev non mi fa usare le api di mojang
+// Original Mojang API URL (commented out for proxy usage)
+// const BASE_URL = 'https://api.mojang.com';
+
+// Using a proxy to bypass CORS restrictions during development
 const BASE_URL = '/api';
 
+/**
+ * Retrieves the UUID for a Minecraft username from the Mojang API.
+ * Uses a proxy endpoint to avoid CORS issues during development.
+ *
+ * @param {string} username - The Minecraft username to lookup
+ * @returns {Promise<string | null>} The player's UUID or null if not found
+ *
+ * @example
+ * const uuid = await getUUID('Notch');
+ * // Returns: '069a79f444e94726a5befca90e38aaf5'
+ */
 export async function getUUID(username: string): Promise<string | null> {
   try {
     const response = await axios.get(`${BASE_URL}/users/profiles/minecraft/${username}`);
