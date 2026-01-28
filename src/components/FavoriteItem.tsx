@@ -1,7 +1,23 @@
 import { usePlayer } from '../hooks/usePlayer';
 import { useNavigationState } from '../hooks/useNavigationState';
 
-export function FavoriteItem({ uuid }: { uuid: string }) {
+/**
+ * Props for the FavoriteItem component
+ * @property {string} uuid - The UUID of the favorite player
+ */
+interface FavoriteItemProps {
+  uuid: string;
+}
+
+/**
+ * Component that displays a single favorite player item.
+ * Shows the player's avatar, name, and a button to navigate to their profile.
+ * Handles loading and error states gracefully.
+ *
+ * @param {FavoriteItemProps} props - Component props
+ * @returns {JSX.Element} A list item containing the favorite player info
+ */
+export function FavoriteItem({ uuid }: FavoriteItemProps) {
   const { data: player, isLoading, error } = usePlayer(uuid);
   const { navigateToProfile } = useNavigationState();
 

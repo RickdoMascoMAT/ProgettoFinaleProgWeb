@@ -57,13 +57,13 @@ export function useProgressiveAuctions() {
         if (newLastUpdated === lastUpdatedRef.current) {
           bufferRef.current = Math.min(bufferRef.current + BUFFER_INCREMENT, 10000);
           setStoredBuffer(bufferRef.current);
-          console.debug(`[Auctions] Buffer aumentato a ${bufferRef.current}ms`);
+          console.debug(`[Auctions] Buffer increased to ${bufferRef.current}ms`);
           setIsLoading(false);
           return;
         } else {
           bufferRef.current = Math.max(bufferRef.current - BUFFER_INCREMENT, 500);
           setStoredBuffer(bufferRef.current);
-          console.debug(`[Auctions] Buffer ridotto a ${bufferRef.current}ms`);
+          console.debug(`[Auctions] Buffer reduced to ${bufferRef.current}ms`);
         }
       }
 

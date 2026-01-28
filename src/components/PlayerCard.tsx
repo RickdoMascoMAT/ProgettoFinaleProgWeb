@@ -1,6 +1,10 @@
 import type { PlayerCardProps } from '../types/player';
 import StatDisplay from './StatDisplay';
 
+/**
+ * Mapping of Hypixel rank names to their display colors.
+ * Used to style the player's rank with the correct color.
+ */
 const rankColors: Record<string, string> = {
   NONE: '#AAAAAA',
   VIP: '#00AA00',
@@ -14,18 +18,40 @@ const rankColors: Record<string, string> = {
   MODERATOR: '#AA00AA',
 };
 
+/**
+ * Extracts the player's rank from their data.
+ * @param {PlayerCardProps['player']} player - The player object
+ * @returns {string} The player's rank or 'NONE' if not found
+ */
 function getRank(player: PlayerCardProps['player']): string {
   return player.newPackageRank || 'NONE';
 }
 
+/**
+ * Formats a Unix timestamp to a localized date string.
+ * @param {number} timestamp - Unix timestamp in milliseconds
+ * @returns {string} Formatted date string in en-US locale
+ */
 function formatDate(timestamp: number): string {
   return new Date(timestamp).toLocaleDateString('en-US');
 }
 
+/**
+ * Formats a number with locale-specific thousand separators.
+ * @param {number | undefined} num - The number to format
+ * @returns {string} Formatted number string or '0' if undefined
+ */
 function formatNumber(num: number | undefined): string {
   return num !== undefined ? num.toLocaleString('en-US') : '0';
 }
 
+/**
+ * Component that displays a player's profile card with their avatar and stats.
+ * Shows player information including rank, level, achievements, karma, and login dates.
+ *
+ * @param {PlayerCardProps} props - Component props containing player data
+ * @returns {JSX.Element} A styled player card with avatar and statistics
+ */
 export function PlayerCard({ player }: PlayerCardProps) {
   const skinUrl = `https://minotar.net/avatar/${player.uuid}/64.png`;
   const rank = getRank(player);

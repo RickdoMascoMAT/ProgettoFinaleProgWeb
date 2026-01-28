@@ -14,6 +14,7 @@ export interface PlayerApiResponse {
   cause?: string;
   player: Player;
 }
+
 export interface ProfileApiResponse {
   success: boolean;
   profiles: ProfileElement[];

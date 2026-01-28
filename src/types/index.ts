@@ -1,5 +1,7 @@
 export type UUID = string;
+
 export type DisplayName = string;
+
 export type Rank = string;
 
 export type Timestamp = number;

@@ -4,22 +4,39 @@ import { useApiKey } from '../hooks/useApiKey.ts';
 import { useEffect } from 'react';
 import ErrorMessage from '../components/ErrorMessage.tsx';
 import SuccessMessage from '../components/SuccessMessage.tsx';
-import { getFavorites } from '../services/favoritesApi';
+import { getFavorites, saveUserPreferences } from '../services/favoritesApi';
 import { FavoriteItem } from '../components/FavoriteItem';
 import { handleApiError } from '../utils/apiErrorHandler';
 import { validateApiKey } from '../services/hypixelApi';
 
+/**
+ * Home page component.
+ * Main entry point of the application with API key configuration,
+ * player search functionality, and favorites management.
+ *
+ * Features:
+ * - Hypixel API key input and validation
+ * - Minecraft username search to find players
+ * - Display of searched player with navigation to profile
+ * - List of favorite players for quick access
+ * - Navigation to auctions page
+ *
+ * @returns {JSX.Element} The home page UI
+ */
 export function HomePage() {
   const [username, setUsername] = useState(``);
-  const { setApiKey: saveApiKey, getApiKey } = useApiKey();
+
+  const { setApiKey: saveApiKey, getApiKey, clearApiKey } = useApiKey();
   const savedKey = getApiKey();
   const [apiKey, setApiKey] = useState(savedKey ? '**************' : '');
   const [isApiKeyModified, setIsApiKeyModified] = useState(false);
+
   const [APIMessage, setAPIMessage] = useState('');
   const [usernameMessage, setUsernameMessage] = useState('');
+  const [apiKeyWarning, setApiKeyWarning] = useState('');
+
   const favorites = getFavorites();
   const [searchedUUID, setSearchedUUID] = useState<string | null>(null);
-  const [apiKeyWarning, setApiKeyWarning] = useState('');
 
   useEffect(() => {
     if (APIMessage) {
@@ -55,6 +72,17 @@ export function HomePage() {
       const isValid = await validateApiKey(apiKey);
       if (isValid) {
         saveApiKey(apiKey);
+
+        try {
+          await saveUserPreferences({
+            theme: 'dark',
+            language: 'en',
+            notifications: true,
+          });
+        } catch (error) {
+          console.error('Failed to save preferences:', error);
+        }
+
         setAPIMessage('API key saved successfully!');
         setApiKey('**************');
         setIsApiKeyModified(false);
@@ -66,6 +94,10 @@ export function HomePage() {
     }
   };
 
+  /**
+   * Handles username search form submission.
+   * Looks up the UUID for the entered username and stores the result.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -115,6 +147,22 @@ export function HomePage() {
           <button type="submit" className="form-button">
             Save API key
           </button>
+          {savedKey && (
+            <button
+              type="button"
+              className="form-button"
+              style={{ marginLeft: '10px', backgroundColor: '#dc3545' }}
+              onClick={() => {
+                clearApiKey();
+                setApiKey('');
+                setApiKeyWarning('');
+                setAPIMessage('API key removed successfully!');
+                setIsApiKeyModified(false);
+              }}
+            >
+              Clear API key
+            </button>
+          )}
           {APIMessage && <SuccessMessage message={APIMessage} />}
           {apiKeyWarning && <ErrorMessage message={apiKeyWarning} />}
         </div>

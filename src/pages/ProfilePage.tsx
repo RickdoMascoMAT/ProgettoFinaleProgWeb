@@ -10,11 +10,26 @@ import { handleApiError } from '../utils/apiErrorHandler';
 import { useParams, useLocation } from 'react-router-dom';
 import { useUUID } from '../hooks/useUUID';
 
+/**
+ * Profile page component.
+ * Displays detailed player statistics and SkyBlock profile information.
+ *
+ * Features:
+ * - Player card with avatar, rank, and general stats
+ * - SkyBlock profile details (bank balance, game mode, etc.)
+ * - Add/remove player from favorites
+ * - Supports navigation state to avoid redundant API calls
+ *
+ * @returns {JSX.Element} The player profile page UI
+ */
 export function ProfilePage() {
   const { username } = useParams<{ username: string }>();
+
   const location = useLocation();
   const passedPlayer = location.state?.player;
+
   const { data: uuid, isLoading: uuidLoading, error: uuidError } = useUUID(username || '');
+
   const {
     data: player,
     isLoading: playerLoading,
@@ -22,6 +37,7 @@ export function ProfilePage() {
   } = usePlayer(uuid || '', {
     enabled: !!uuid && !passedPlayer,
   });
+
   const {
     data: profiles,
     isLoading: profilesLoading,
@@ -29,11 +45,13 @@ export function ProfilePage() {
   } = useProfiles(uuid || '', {
     enabled: !!uuid,
   });
+
   const [isFavorite, setIsFavorite] = useState(uuid ? getFavorites().includes(uuid) : false);
 
   const currentPlayer = passedPlayer || player;
 
   if (uuidLoading || playerLoading || profilesLoading) return <LoadingSpinner />;
+
   if (uuidError) return <ErrorMessage message={handleApiError(uuidError)} />;
   if (playerError) return <ErrorMessage message={handleApiError(playerError)} />;
   if (profilesError) return <ErrorMessage message={handleApiError(profilesError)} />;
