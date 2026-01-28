@@ -97,7 +97,7 @@ export function ProfilePage() {
                   label="Created on"
                   value={
                     selectedProfile.created_at
-                      ? new Date(selectedProfile.created_at).toLocaleDateString('en-US')
+                      ? new Date(selectedProfile.created_at).toLocaleDateString('it-IT')
                       : 'N/A'
                   }
                   color="#888"
@@ -110,7 +110,7 @@ export function ProfilePage() {
                 {selectedProfile.banking && (
                   <StatDisplay
                     label="Bank Balance"
-                    value={`${(selectedProfile.banking.balance || 0).toLocaleString('en-US')} coins`}
+                    value={`${(selectedProfile.banking.balance || 0).toLocaleString('it-IT')} coins`}
                     color="#FFD700"
                   />
                 )}

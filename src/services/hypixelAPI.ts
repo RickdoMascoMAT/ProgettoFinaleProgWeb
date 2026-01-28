@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { isValidApiResponse } from '../utils/typeGuards';
 
 const BASE_URL = 'https://api.hypixel.net/v2/';
 
@@ -43,6 +44,10 @@ export async function validateApiKey(apiKey: string): Promise<boolean> {
     const response = await axios.get(`${BASE_URL}player`, {
       params: { key: apiKey, uuid: '069a79f444e94726a5befca90e38aaf5' },
     });
+    // Use type guard to validate response structure
+    if (isValidApiResponse(response.data)) {
+      return response.data.success === true;
+    }
     return response.data.success === true;
   } catch {
     return false;

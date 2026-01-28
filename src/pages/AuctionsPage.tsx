@@ -81,7 +81,7 @@ export function AuctionsPage() {
           {lastUpdatedTimestamp && (
             <span>
               Last update:{' '}
-              {new Date(lastUpdatedTimestamp).toLocaleTimeString('en-US', {
+              {new Date(lastUpdatedTimestamp).toLocaleTimeString('it-IT', {
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',
@@ -124,13 +124,13 @@ export function AuctionsPage() {
       {!appliedFilter ? (
         <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>
           <p>Enter a search term to view auctions.</p>
-          <p>There are {auctionsData?.length.toLocaleString('en-US') || 0} auctions available.</p>
+          <p>There are {auctionsData?.length.toLocaleString('it-IT') || 0} auctions available.</p>
         </div>
       ) : (
         <div>
           <h2>
             {showBin ? 'BIN Auctions' : 'Non-BIN Auctions'} - Results:{' '}
-            {filteredAuctions.length.toLocaleString('en-US')}
+            {filteredAuctions.length.toLocaleString('it-IT')}
           </h2>
 
           {filteredAuctions.length === 0 ? (
@@ -159,11 +159,11 @@ export function AuctionsPage() {
                         : auction.bids.length > 0
                           ? auction.bids[auction.bids.length - 1].amount
                           : auction.starting_bid
-                      ).toLocaleString('en-US')}{' '}
+                      ).toLocaleString('it-IT')}{' '}
                       coins
                     </p>
                     <p>
-                      <strong>Ends on:</strong> {new Date(auction.end).toLocaleString('en-US')}
+                      <strong>Ends on:</strong> {new Date(auction.end).toLocaleString('it-IT')}
                     </p>
                     <p>
                       <strong>Auctioneer:</strong> {auction.auctioneer}

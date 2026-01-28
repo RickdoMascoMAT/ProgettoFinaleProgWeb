@@ -1,11 +1,12 @@
 import type { PlayerCardProps } from '../types/player';
+import type { Timestamp, Rank } from '../types';
 import StatDisplay from './StatDisplay';
 
 /**
  * Mapping of Hypixel rank names to their display colors.
  * Used to style the player's rank with the correct color.
  */
-const rankColors: Record<string, string> = {
+const rankColors: Record<Rank, string> = {
   NONE: '#AAAAAA',
   VIP: '#00AA00',
   VIP_PLUS: '#55FFFF',
@@ -21,19 +22,19 @@ const rankColors: Record<string, string> = {
 /**
  * Extracts the player's rank from their data.
  * @param {PlayerCardProps['player']} player - The player object
- * @returns {string} The player's rank or 'NONE' if not found
+ * @returns {Rank} The player's rank or 'NONE' if not found
  */
-function getRank(player: PlayerCardProps['player']): string {
+function getRank(player: PlayerCardProps['player']): Rank {
   return player.newPackageRank || 'NONE';
 }
 
 /**
  * Formats a Unix timestamp to a localized date string.
- * @param {number} timestamp - Unix timestamp in milliseconds
- * @returns {string} Formatted date string in en-US locale
+ * @param {Timestamp} timestamp - Unix timestamp in milliseconds
+ * @returns {string} Formatted date string in it-IT locale
  */
-function formatDate(timestamp: number): string {
-  return new Date(timestamp).toLocaleDateString('en-US');
+function formatDate(timestamp: Timestamp): string {
+  return new Date(timestamp).toLocaleDateString('it-IT');
 }
 
 /**
@@ -42,7 +43,7 @@ function formatDate(timestamp: number): string {
  * @returns {string} Formatted number string or '0' if undefined
  */
 function formatNumber(num: number | undefined): string {
-  return num !== undefined ? num.toLocaleString('en-US') : '0';
+  return num !== undefined ? num.toLocaleString('it-IT') : '0';
 }
 
 /**
