@@ -1,6 +1,7 @@
 import { useApiData } from './useApiData';
 import type { PlayerApiResponse } from '../types/api.ts';
 import { get } from '../services/hypixelApi';
+import { hasEssentialPlayerFields } from '../utils/typeGuards';
 
 /**
  * Hook for fetching player data from the Hypixel API.
@@ -20,6 +21,9 @@ export function usePlayer(uuid: string, options?: { enabled?: boolean }) {
     queryFn: async () => {
       const response: PlayerApiResponse = await get('player', { uuid }, true);
       if (!response.success) throw new Error(response.cause || 'API error');
+      if (!hasEssentialPlayerFields(response.player)) {
+        throw new Error('Invalid player data received from API');
+      }
       return response.player;
     },
     enabled: options?.enabled !== undefined ? options.enabled : !!uuid,

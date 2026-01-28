@@ -136,17 +136,18 @@ src/
 - [x] **API Calls**:
   - [x] Multiple calls with `async/await` (minecraftAPI, hypixelApi)
   - [x] Multiple calls with React Query (usePlayer, useProfiles, useProgressiveAuctions)
-  - [x] **POST mock call** (`saveUserPreferences` in favoritesApi.ts)
+  - [x] **POST call** (`saveUserPreferences` in favoritesApi.ts - simulates async API with localStorage)
   - [x] Error handling for each API call
+  - [x] Type guards for API response validation (`typeGuards.ts`)
 - [x] **Advanced Routing**:
   - [x] Dynamic URL parameters (`/profile/:username`)
   - [x] Navigation with data passing (useNavigationState)
   - [x] 404 page (NotFoundPage)
 - [x] **Advanced TypeScript**:
   - [x] Multiple interfaces (Player, Profile, Auction, etc.)
-  - [x] Type aliases (`UUID`, `LoadingState`, etc.)
-  - [x] Generics (`useApiData<T>`, `ApiResponse<T>`)
-  - [x] Union/Intersection types (in `advanced.ts`)
+  - [x] Type aliases (`UUID`, `DisplayName`, `Rank`, `Timestamp`, `Optional<T>`)
+  - [x] Generics (`useApiData<T>`, `ApiResponse<T>`, `Optional<T>`)
+  - [x] Type guards (`isValidApiResponse<T>`, `hasEssentialPlayerFields`)
 - [x] **Code Quality**:
   - [x] Clean and readable code
   - [x] Consistent naming conventions
@@ -169,11 +170,11 @@ src/
 ## Credentials / Mock Data
 
 - **API Key**: Required for real Hypixel data. Get one at [developer.hypixel.net](https://developer.hypixel.net)
-- **Mock Data**: WIP
+- **POST Call**: The `saveUserPreferences` function simulates a POST request with async/await, using `localStorage` for persistence and a 500ms delay to simulate network latency
 - **LocalStorage Keys**:
   - `hypixelApiKey` - Stored API key
   - `favorites` - Array of favorite player UUIDs
-  - `userPreferences` - User preferences (POST mock)
+  - `userPreferences` - User preferences (saved via simulated POST)
 
 ## License
 

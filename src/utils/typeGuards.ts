@@ -6,7 +6,7 @@ import type { Player } from '../types/player';
  * Validates that the response has a boolean 'success' property and a 'data' property.
  *
  * @template T - The expected type of the response data
- * @param {any} response - The response object to validate
+ * @param {unknown} response - The response object to validate
  * @returns {boolean} True if the response is a valid ApiResponse
  *
  * @example
@@ -15,15 +15,21 @@ import type { Player } from '../types/player';
  *   console.log(response.data.displayname);
  * }
  */
-export function isValidApiResponse<T>(response: any): response is ApiResponse<T> {
-  return response && typeof response.success === 'boolean' && 'data' in response;
+export function isValidApiResponse<T>(response: unknown): response is ApiResponse<T> {
+  return (
+    typeof response === 'object' &&
+    response !== null &&
+    'success' in response &&
+    typeof (response as ApiResponse<T>).success === 'boolean' &&
+    'data' in response
+  );
 }
 
 /**
  * Type guard to check if an object has the essential fields of a Player.
  * Validates that the object has a string 'uuid' and 'displayname' property.
  *
- * @param {any} player - The object to validate
+ * @param {unknown} player - The object to validate
  * @returns {boolean} True if the object has essential Player fields
  *
  * @example
@@ -32,6 +38,13 @@ export function isValidApiResponse<T>(response: any): response is ApiResponse<T>
  *   console.log(`Player: ${data.displayname}`);
  * }
  */
-export function hasEssentialPlayerFields(player: any): player is Player {
-  return player && typeof player.uuid === 'string' && typeof player.displayname === 'string';
+export function hasEssentialPlayerFields(player: unknown): player is Player {
+  return (
+    typeof player === 'object' &&
+    player !== null &&
+    'uuid' in player &&
+    typeof (player as Player).uuid === 'string' &&
+    'displayname' in player &&
+    typeof (player as Player).displayname === 'string'
+  );
 }
