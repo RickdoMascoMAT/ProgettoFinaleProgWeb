@@ -1,6 +1,7 @@
 import { useProgressiveAuctions } from '../hooks/useProgressiveAuctions';
 import ErrorMessage from '../components/ErrorMessage';
 import { useState, useMemo } from 'react';
+import type { Auction } from '../types/auctions';
 
 const ITEMS_PER_PAGE = 50;
 
@@ -41,7 +42,7 @@ export function AuctionsPage() {
      * Gets the current price of an auction.
      * For BIN: starting bid. For regular: highest bid or Infinity if no bids.
      */
-    const getPrice = (auction: any) =>
+    const getPrice = (auction: Auction) =>
       auction.bin
         ? auction.starting_bid
         : auction.bids.length > 0
