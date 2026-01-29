@@ -7,7 +7,7 @@ import SuccessMessage from '../components/SuccessMessage.tsx';
 import { getFavorites, saveUserPreferences } from '../services/favoritesApi';
 import { FavoriteItem } from '../components/FavoriteItem';
 import { handleApiError } from '../utils/apiErrorHandler';
-import { validateApiKey } from '../services/hypixelApi';
+import { validateApiKey } from '../services/hypixelAPI';
 
 /**
  * Home page component.

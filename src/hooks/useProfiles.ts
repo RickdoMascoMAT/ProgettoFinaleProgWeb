@@ -1,7 +1,7 @@
 import type { UUID } from '../types/index';
 import { useApiData } from './useApiData';
 import type { ProfileApiResponse } from '../types/api';
-import { get } from '../services/hypixelApi';
+import { get } from '../services/hypixelAPI';
 
 /**
  * Hook for fetching SkyBlock profiles for a player from the Hypixel API.

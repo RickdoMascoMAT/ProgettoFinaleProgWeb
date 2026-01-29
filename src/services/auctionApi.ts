@@ -1,4 +1,4 @@
-import { get } from './hypixelApi';
+import { get } from './hypixelAPI';
 import type { AuctionsRoot } from '../types/auctions';
 
 /**
