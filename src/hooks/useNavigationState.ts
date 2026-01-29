@@ -17,9 +17,9 @@ export function useNavigationState() {
   /**
    * Navigates to a player's profile page with optional state data.
    * @param {string} username - The player's username
-   * @param {any} [state] - Optional state to pass to the profile page
+   * @param {Record<string, unknown>} [state] - Optional state to pass to the profile page
    */
-  const navigateToProfile = (username: string, state?: any) => {
+  const navigateToProfile = (username: string, state?: Record<string, unknown>) => {
     navigate(`/profile/${username}`, { state });
   };
 
