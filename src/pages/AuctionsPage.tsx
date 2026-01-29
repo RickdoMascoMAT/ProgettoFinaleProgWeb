@@ -1,11 +1,13 @@
 import { useProgressiveAuctions } from '../hooks/useProgressiveAuctions';
 import ErrorMessage from '../components/ErrorMessage';
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Auction } from '../types/auctions';
 
 const ITEMS_PER_PAGE = 50;
 
 export function AuctionsPage() {
+  const navigate = useNavigate();
   const {
     data: auctionsData,
     error,
@@ -74,7 +76,7 @@ export function AuctionsPage() {
   return (
     <div>
       <h1>Auctions</h1>
-      <button onClick={() => (window.location.href = '/')} className="form-button back-button">
+      <button onClick={() => navigate('/')} className="form-button back-button">
         Back to Home
       </button>
       <div style={{ marginBottom: '20px' }}>

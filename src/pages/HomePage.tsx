@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getUUID } from '../services/minecraftAPI.ts';
 import { useApiKey } from '../hooks/useApiKey.ts';
-import { useEffect } from 'react';
 import ErrorMessage from '../components/ErrorMessage.tsx';
 import SuccessMessage from '../components/SuccessMessage.tsx';
 import { getFavorites, saveUserPreferences } from '../services/favoritesApi';
@@ -24,6 +24,7 @@ import { validateApiKey } from '../services/hypixelAPI';
  * @returns {JSX.Element} The home page UI
  */
 export function HomePage() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState(``);
 
   const { setApiKey: saveApiKey, getApiKey, clearApiKey } = useApiKey();
@@ -193,7 +194,7 @@ export function HomePage() {
         </div>
       </form>
       <div style={{ textAlign: 'left', marginTop: '20px' }}>
-        <button onClick={() => (window.location.href = '/auctions')} className="form-button">
+        <button onClick={() => navigate('/auctions')} className="form-button">
           View Auctions House
         </button>
       </div>

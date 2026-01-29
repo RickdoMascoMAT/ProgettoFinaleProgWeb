@@ -7,7 +7,7 @@ import StatDisplay from '../components/StatDisplay.tsx';
 import { useState } from 'react';
 import { addFavorite, removeFavorite, getFavorites } from '../services/favoritesApi';
 import { handleApiError } from '../utils/apiErrorHandler';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useUUID } from '../hooks/useUUID';
 
 /**
@@ -24,7 +24,7 @@ import { useUUID } from '../hooks/useUUID';
  */
 export function ProfilePage() {
   const { username } = useParams<{ username: string }>();
-
+  const navigate = useNavigate();
   const location = useLocation();
   const passedPlayer = location.state?.player;
 
@@ -61,7 +61,7 @@ export function ProfilePage() {
   return (
     <>
       <h1>Player Statistics</h1>
-      <button onClick={() => (window.location.href = '/')} className="form-button back-button">
+      <button onClick={() => navigate('/')} className="form-button back-button">
         Back to Home
       </button>
       {uuid && (
