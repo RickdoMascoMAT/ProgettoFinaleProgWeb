@@ -1,6 +1,6 @@
 import { useApiData } from './useApiData';
 import type { PlayerApiResponse } from '../types/api.ts';
-import { get } from '../services/hypixelApi';
+import { get } from '../services/hypixelAPI';
 import { hasEssentialPlayerFields } from '../utils/typeGuards';
 
 /**
