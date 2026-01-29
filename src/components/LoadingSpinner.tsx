@@ -3,7 +3,7 @@ import React from 'react';
 /**
  * Loading spinner component.
  * Displays an animated spinner to indicate that content is being loaded.
- * Uses CSS classes loading-spinner and spinner for styling and animation.
+ * Uses CSS classes 'loading-spinner' and 'spinner' for styling and animation.
  *
  * @returns {JSX.Element} A div containing the animated loading spinner
  */
