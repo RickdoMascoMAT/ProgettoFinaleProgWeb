@@ -1,15 +1,14 @@
 import axios from 'axios';
 import type { DisplayName, UUID, Optional } from '../types/index';
 
-// Original Mojang API URL (commented out for proxy usage)
-// const BASE_URL = 'https://api.mojang.com';
-
-// Using a proxy to bypass CORS restrictions during development
-const BASE_URL = '/api';
+// In development use proxy, in production use PlayerDB API (CORS-friendly)
+const isDev = import.meta.env.DEV;
+const MOJANG_PROXY = '/api';
+const PLAYERDB_API = 'https://playerdb.co/api/player/minecraft';
 
 /**
- * Retrieves the UUID for a Minecraft username from the Mojang API.
- * Uses a proxy endpoint to avoid CORS issues during development.
+ * Retrieves the UUID for a Minecraft username.
+ * Uses Mojang API via proxy in development, PlayerDB API in production.
  *
  * @param {DisplayName} username - The Minecraft username to lookup
  * @returns {Promise<Optional<UUID>>} The player's UUID or null if not found
@@ -20,8 +19,19 @@ const BASE_URL = '/api';
  */
 export async function getUUID(username: DisplayName): Promise<Optional<UUID>> {
   try {
-    const response = await axios.get(`${BASE_URL}/users/profiles/minecraft/${username}`);
-    return response.data.id;
+    if (isDev) {
+      // Development: use Mojang API via proxy
+      const response = await axios.get(`${MOJANG_PROXY}/users/profiles/minecraft/${username}`);
+      return response.data.id;
+    } else {
+      // Production: use PlayerDB API (CORS-friendly)
+      const response = await axios.get(`${PLAYERDB_API}/${username}`);
+      if (response.data.success && response.data.data?.player?.id) {
+        // PlayerDB returns UUID with dashes, remove them
+        return response.data.data.player.id.replace(/-/g, '');
+      }
+      return null;
+    }
   } catch (error) {
     console.error('Error fetching UUID:', error);
     return null;
