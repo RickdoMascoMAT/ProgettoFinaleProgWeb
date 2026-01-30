@@ -1,0 +1,134 @@
+{
+  "success": true,
+  "lastUpdated": 1768414322399,
+  "mayor": {
+    "key": "aura",
+    "name": "Aura",
+    "perks": [],
+    "election": {
+      "year": 466,
+      "candidates": [
+        {
+          "key": "farming",
+          "name": "Finnegan",
+          "perks": [
+            {
+              "name": "Pelt-pocalypse",
+              "description": "Obtain §a1.5x §7more §5pelts §7from §aTrevor §7in the §eMushroom Desert§7, hunt a new trapper mob, and purchase items from a new trapper shop.",
+              "minister": true
+            },
+            {
+              "name": "Blooming Business",
+              "description": "All Garden Visitors reward §aFine Flour§7 and §c+10% Copper §7for accepting offers. Invites §a5 §7unique visitors to your §aGarden §7and makes higher rarity visitors §a20% §7more likely to show up.",
+              "minister": false
+            }
+          ],
+          "votes": 0
+        },
+        {
+          "key": "fishing",
+          "name": "Marina",
+          "perks": [
+            {
+              "name": "Fishing XP Buff",
+              "description": "Gain §3+50☯ Fishing Wisdom §7on public islands.",
+              "minister": false
+            },
+            {
+              "name": "Luck of the Sea 2.0",
+              "description": "Gain §315α Sea Creature Chance§7.",
+              "minister": false
+            },
+            {
+              "name": "Fishing Festival",
+              "description": "Start a special fishing event the first §b3 §7days of each month!",
+              "minister": false
+            },
+            {
+              "name": "Double Trouble",
+              "description": "For every §31α Sea Creature Chance§7, gain §9+0.1⚓ Double Hook Chance§7.",
+              "minister": true
+            }
+          ],
+          "votes": 0
+        },
+        {
+          "key": "events",
+          "name": "Foxy",
+          "perks": [
+            {
+              "name": "Sweet Benevolence",
+              "description": "Earn §a+30% §7more §dCandy§7, §cGifts §7and §6Chocolate §7from duplicate rabbits during their respective events.",
+              "minister": false
+            },
+            {
+              "name": "A Time for Giving",
+              "description": "Spawn §dParty Chests §7by killing mobs during the §6Spooky Festival §7and collect §bParty Gifts §7from §cJerry's Workshop§7.",
+              "minister": false
+            },
+            {
+              "name": "Chivalrous Carnival",
+              "description": "Schedules a §eCarnival §7in the hub, active throughout the §bentire year§7.",
+              "minister": false
+            },
+            {
+              "name": "Extra Event",
+              "description": "Schedules an extra §6Mining Fiesta §7event during the year.",
+              "minister": true
+            }
+          ],
+          "votes": 0
+        },
+        {
+          "key": "dungeons",
+          "name": "Paul",
+          "perks": [
+            {
+              "name": "Marauder",
+              "description": "Dungeon reward chests are §e20% §7cheaper.",
+              "minister": false
+            },
+            {
+              "name": "EZPZ",
+              "description": "Gain §e10 §7bonus score on dungeon runs.",
+              "minister": true
+            },
+            {
+              "name": "Benediction",
+              "description": "Blessings are §d25% §7stronger.",
+              "minister": false
+            }
+          ],
+          "votes": 0
+        },
+        {
+          "key": "mining",
+          "name": "Cole",
+          "perks": [
+            {
+              "name": "Prospection",
+              "description": "Mining minions work §a25% §7faster.",
+              "minister": true
+            },
+            {
+              "name": "Mining XP Buff",
+              "description": "Get §3+60☯ Mining Wisdom §7on public islands.",
+              "minister": false
+            },
+            {
+              "name": "Mining Fiesta",
+              "description": "§7Schedules 5 §6Mining Fiestas §7throughout the year! During these events gain §3+75☯ Mining Wisdom§7, collect §9Refined Mineral §7and §5Glossy Gemstone§7, and earn §d2x drops §7from mining!",
+              "minister": false
+            },
+            {
+              "name": "Molten Forge",
+              "description": "Decrease the time it takes to §6forge §7items by §d25%§7.",
+              "minister": false
+            }
+          ],
+          "votes": 0
+        }
+      ]
+    }
+  }
+}
