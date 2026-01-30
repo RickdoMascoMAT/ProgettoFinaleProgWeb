@@ -34,9 +34,21 @@ const MOCK_UUIDS: Record<string, string> = {
   notch: '069a79f444e94726a5befca90e38aaf5',
 };
 
+// Reverse mapping for UUID to username
+const MOCK_USERNAMES: Record<string, string> = Object.fromEntries(
+  Object.entries(MOCK_UUIDS).map(([name, uuid]) => [uuid, name])
+);
+
 /**
  * Get mock UUID for a username (only used when no API key)
  */
 export function getMockUUID(username: string): string | null {
   return MOCK_UUIDS[username.toLowerCase()] || null;
+}
+
+/**
+ * Get mock username for a UUID (only used when no API key)
+ */
+export function getMockUsername(uuid: string): string | null {
+  return MOCK_USERNAMES[uuid] || null;
 }
