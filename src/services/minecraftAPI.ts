@@ -1,6 +1,6 @@
 import axios from 'axios';
 import type { DisplayName, UUID, Optional } from '../types/index';
-import { shouldUseMock, getMockUUID } from './mockService';
+import { shouldUseMock, getMockUUID, getMockUsername } from './mockService';
 
 // In development use proxy, in production use PlayerDB API (CORS-friendly)
 const isDev = import.meta.env.DEV;
@@ -63,6 +63,10 @@ export async function getUUID(username: DisplayName): Promise<Optional<UUID>> {
 export async function getUsername(uuid: UUID): Promise<Optional<DisplayName>> {
   try {
     if (shouldUseMock()) {
+      const mockUsername = getMockUsername(uuid);
+      if (mockUsername) {
+        return mockUsername;
+      }
       return null;
     }
 
