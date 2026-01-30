@@ -5,6 +5,22 @@
   text-align: center;
 }
 
+.app-logo {
+  height: 48px;
+  width: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 12px;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

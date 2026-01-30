@@ -10,16 +10,22 @@ This application allows users to:
 - Browse the SkyBlock Auction House with filtering and sorting
 - Save favorite players for quick access
 - View detailed player profiles with SkyBlock-specific data
+- View auction details including item attributes, prices, and auctioneer information
+- Filter and sort auctions by various criteria such as price, ending soonest, etc.
+- Support for both BIN (Buy It Now) and auction listings
+- Toggle between searching by item name or auctioneer name
+- Auctioneer name to UUID conversion for accurate search
 
 ## Tech Stack
 
-- **React 18** - UI Library
+- **React 19** - UI Library
 - **TypeScript** - Type-safe JavaScript
 - **React Query (@tanstack/react-query)** - Server state management and API caching
 - **React Router DOM** - Client-side routing
 - **Axios** - HTTP client
 - **Vite** - Build tool and dev server
 - **Tailwind CSS** - Utility-first CSS framework
+- **GitHub Actions** - CI/CD pipeline for automated testing and deployment
 
 ## Installation & Setup
 
@@ -66,11 +72,18 @@ The application uses the Hypixel API. To access real data:
   - `GET /skyblock/profiles` - SkyBlock profiles
   - `GET /skyblock/auctions` - Auction House data
 
-### Mojang API
+### Mojang API (Development)
 
 - **Base URL**: `https://api.mojang.com/`
 - **Endpoints used**:
   - `GET /users/profiles/minecraft/:username` - Username to UUID conversion
+- Used via Vite proxy in development mode
+
+### PlayerDB API (Production)
+
+- **Base URL**: `https://playerdb.co/api/player/minecraft/`
+- **Documentation**: [playerdb.co](https://playerdb.co/)
+- CORS-friendly alternative to Mojang API for production builds
 
 ### API Key Management
 
@@ -83,6 +96,7 @@ The application uses the Hypixel API. To access real data:
 ```
 src/
 ├── components/          # Reusable UI components
+│   ├── AuctionItem.tsx    # Individual auction display component
 │   ├── ErrorMessage.tsx
 │   ├── FavoriteItem.tsx
 │   ├── LoadingSpinner.tsx
@@ -96,7 +110,8 @@ src/
 │   ├── usePlayer.ts        # Player data fetching
 │   ├── useProfiles.ts      # Profile data fetching
 │   ├── useProgressiveAuctions.ts  # Auctions with progressive loading
-│   └── useUUID.ts          # Username to UUID conversion
+│   ├── useUUID.ts          # Username to UUID conversion
+│   └── useUsername.ts      # UUID to username conversion
 ├── pages/               # Application pages
 │   ├── AuctionsPage.tsx
 │   ├── HomePage.tsx
@@ -105,8 +120,9 @@ src/
 ├── services/            # API services
 │   ├── auctionApi.ts
 │   ├── favoritesApi.ts     # Includes POST mock for user preferences
-│   ├── hypixelApi.ts
-│   └── minecraftAPI.ts
+│   ├── hypixelAPI.ts
+│   ├── minecraftAPI.ts
+│   └── mockService.ts      # Mock data management for demo mode
 ├── types/               # TypeScript type definitions
 │   ├── advanced.ts         # Generic types, unions, intersections
 │   ├── api.ts
@@ -159,6 +175,13 @@ src/
 
 ### Extra Features
 
+- [x] **CI/CD Pipeline** with GitHub Actions:
+  - Automated build, lint, and type checking on push/PR
+  - Automatic deployment to GitHub Pages
+  - Release creation on version tags
+- [x] **Demo Mode**: Automatic mock data when no API key is configured
+- [x] **DEV Player**: Rick_doMasco shown with DEV tag as demo player
+- [x] **Item Autocomplete**: Search suggestions from SkyBlock items database when typing in Auctions page
 - [x] Progressive auction loading (loads pages incrementally)
 - [x] Favorite players system with localStorage persistence
 - [x] Auction filtering by item name
@@ -166,15 +189,27 @@ src/
 - [x] Pagination for auction results
 - [x] API key validation before saving
 - [x] Auto-refresh for auction data
+- [x] Auctioneer names displayed instead of UUIDs (using PlayerDB API)
+- [x] Click on auction to copy /viewauction command to clipboard
+- [x] Grid layout for auctions (2 columns)
+- [x] Success message feedback for user actions
+- [x] Toggle between item name and auctioneer name search modes
+- [x] Auctioneer name to UUID conversion for accurate search
 
 ## Credentials / Mock Data
 
 - **API Key**: Required for real Hypixel data. Get one at [developer.hypixel.net](https://developer.hypixel.net)
+- **Demo Mode**: When no API key is configured, the app automatically uses mock data for authenticated endpoints (player, profiles). Click on **Rick_doMasco (DEV)** in the favorites to see sample data.
 - **POST Call**: The `saveUserPreferences` function simulates a POST request with async/await, using `localStorage` for persistence and a 500ms delay to simulate network latency
+- **Mock Data Files**: Located in `public/data/` - includes player.json, profiles.json for demo purposes
 - **LocalStorage Keys**:
   - `hypixelApiKey` - Stored API key
   - `favorites` - Array of favorite player UUIDs
   - `userPreferences` - User preferences (saved via simulated POST)
+
+## Live Demo
+
+The application is deployed on GitHub Pages: [https://rickdomascomat.github.io/ProgettoFinaleProgWeb/](https://rickdomascomat.github.io/ProgettoFinaleProgWeb/)
 
 ## License
 

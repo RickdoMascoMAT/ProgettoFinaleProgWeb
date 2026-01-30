@@ -8,6 +8,7 @@ import { getFavorites, saveUserPreferences } from '../services/favoritesApi';
 import { FavoriteItem } from '../components/FavoriteItem';
 import { handleApiError } from '../utils/apiErrorHandler';
 import { validateApiKey } from '../services/hypixelAPI';
+import { shouldUseMock } from '../services/mockService';
 
 /**
  * Home page component.
@@ -38,6 +39,8 @@ export function HomePage() {
 
   const favorites = getFavorites();
   const [searchedUUID, setSearchedUUID] = useState<string | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const usingMockData = shouldUseMock();
 
   useEffect(() => {
     if (APIMessage) {
@@ -101,6 +104,7 @@ export function HomePage() {
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSearching(true);
     try {
       const uuid = await getUUID(username);
       if (uuid) {
@@ -112,20 +116,43 @@ export function HomePage() {
       }
     } catch (error) {
       setUsernameMessage(handleApiError(error));
+    } finally {
+      setIsSearching(false);
     }
   };
 
   return (
     <>
-      <h1>Hypixel SkyBlock Stats Tracker</h1>
+      <div className="app-header">
+        <h1 style={{ margin: 0 }}>Hypixel SkyBlock Stats Tracker</h1>
+      </div>
       <p style={{ textAlign: 'left', marginBottom: '20px' }}>
-        Welcome! Enter your Hypixel API key to access real data (optional for mockup data [WIP]) and
-        search for a player to view their SkyBlock statistics.
+        Welcome! Enter your Hypixel API key to access real player data, or click on the DEV player
+        below to see sample data.
       </p>
+
+      {usingMockData && (
+        <div
+          style={{
+            textAlign: 'left',
+            marginBottom: '20px',
+            padding: '10px',
+            backgroundColor: '#2d4a3e',
+            borderRadius: '8px',
+            border: '1px solid #4ade80',
+          }}
+        >
+          <p style={{ margin: 0, color: '#4ade80' }}>
+            <strong>Demo Mode:</strong> No API key configured. Click on{' '}
+            <strong>Rick_doMasco (DEV)</strong> below to view sample data.
+          </p>
+        </div>
+      )}
+
       <form onSubmit={handleApiKeySubmit}>
         <div style={{ textAlign: 'left', marginBottom: '10px' }}>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-            Hypixel API Key (optional for mockup data [WIP]):
+            Hypixel API Key:
             <br />
           </label>
           <label style={{ display: 'block', marginBottom: '15px' }}>
@@ -144,8 +171,9 @@ export function HomePage() {
               setApiKey(e.target.value);
               setIsApiKeyModified(true);
             }}
+            aria-label="Hypixel API key"
           />
-          <button type="submit" className="form-button">
+          <button type="submit" className="form-button" aria-label="Save API key">
             Save API key
           </button>
           {savedKey && (
@@ -160,6 +188,7 @@ export function HomePage() {
                 setAPIMessage('API key removed successfully!');
                 setIsApiKeyModified(false);
               }}
+              aria-label="Clear API key"
             >
               Clear API key
             </button>
@@ -181,20 +210,31 @@ export function HomePage() {
               placeholder="E.g. Notch"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              aria-label="Minecraft username"
             />
-            <button type="submit" className="form-button">
-              Search Player
+            <button
+              type="submit"
+              className="form-button"
+              disabled={isSearching || !username.trim()}
+              aria-label="Search for player"
+            >
+              {isSearching ? 'Searching...' : 'Search Player'}
             </button>
           </div>
-          {usernameMessage && usernameMessage.includes('successo') ? (
-            <SuccessMessage message={usernameMessage} />
-          ) : (
-            <ErrorMessage message={usernameMessage} />
-          )}
+          {usernameMessage &&
+            (usernameMessage.toLowerCase().includes('success') ? (
+              <SuccessMessage message={usernameMessage} />
+            ) : (
+              <ErrorMessage message={usernameMessage} />
+            ))}
         </div>
       </form>
       <div style={{ textAlign: 'left', marginTop: '20px' }}>
-        <button onClick={() => navigate('/auctions')} className="form-button">
+        <button
+          onClick={() => navigate('/auctions')}
+          className="form-button"
+          aria-label="View Auctions House"
+        >
           View Auctions House
         </button>
       </div>
