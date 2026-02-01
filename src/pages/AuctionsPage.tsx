@@ -6,7 +6,7 @@ import { useState, useMemo, useRef, useEffect } from 'react';
 import type { Auction } from '../types/auctions';
 import { useUUID } from '../hooks/useUUID';
 import { getUsername } from '../services/minecraftAPI';
-import { shouldUseMock } from '../services/mockService';
+
 import pLimit from 'p-limit';
 
 const ITEMS_PER_PAGE = 50;
@@ -18,11 +18,11 @@ const MAX_SUGGESTIONS = 10;
  * Features:
  * - Search auctions by item name or auctioneer (username/UUID)
  * - Autocomplete suggestions for item names
- * - Filter by BIN (Buy It Now) or regular auctions
+ * - Filter by All/BIN/Non-BIN with slider
+ * - Sort by Ending Soon/Lowest Price/Highest Price
  * - Pagination for large result sets
  * - Click auction to copy /viewauction command to clipboard
- * - Real-time auctioneer name resolution from UUIDs
- * - Price sorting (lowest first)
+ * - Real-time auctioneer name resolution from UUIDs (always visible)
  *
  * @returns {JSX.Element} The auctions page UI with search and results
  */
@@ -33,7 +33,10 @@ export function AuctionsPage() {
   const [searchMode, setSearchMode] = useState<'item' | 'auctioneer'>('item');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [successMessage, setSuccessMessage] = useState<string>('');
-  const [showBin, setShowBin] = useState<boolean>(true);
+  const [binFilter, setBinFilter] = useState<'all' | 'bin' | 'non-bin'>('all');
+  const [sortMode, setSortMode] = useState<'ending-soon' | 'lowest-price' | 'highest-price'>(
+    'lowest-price'
+  );
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
 
@@ -56,84 +59,59 @@ export function AuctionsPage() {
   const [itemNames, setItemNames] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLUListElement>(null);
+  const prevSearchModeRef = useRef(searchMode);
+  const prevAppliedFilterRef = useRef(appliedFilter);
+  const prevAppliedFilterForMapRef = useRef(appliedFilter);
 
   /**
    * Loads available item names for autocomplete suggestions.
-   * Fetches from Hypixel API if API key is present, otherwise uses static data.
-   * Filters out items that can't be auctioned and simplifies names for better matching.
+   * Filters: removes items with % in name, bazaar items, and Booster Cookie
    */
   useEffect(() => {
     const loadItemNames = async () => {
-      if (shouldUseMock()) {
+      try {
+        const itemsResponse = await fetch('https://api.hypixel.net/resources/skyblock/items');
+        if (!itemsResponse.ok) return;
+        const itemsData = await itemsResponse.json();
+        if (!itemsData.success) return;
+
+        const bazaarResponse = await fetch('https://api.hypixel.net/skyblock/bazaar');
+        if (!bazaarResponse.ok) return;
+        const bazaarData = await bazaarResponse.json();
+        if (!bazaarData.success) return;
+
+        const bazaarIds = new Set(Object.keys(bazaarData.products));
+
+        interface HypixelItem {
+          id: string;
+          name: string;
+        }
+
+        const filteredItems = (itemsData.items as HypixelItem[]).filter(
+          (item) =>
+            !item.name.includes('%') &&
+            !bazaarIds.has(item.id) &&
+            !item.name.toLowerCase().includes('booster cookie')
+        );
+
+        const names = filteredItems.map((item) => simplifyItemName(item.name));
+        const uniqueNames = Array.from(new Set(names)).sort();
+        setItemNames(uniqueNames);
+      } catch {
         try {
           const baseUrl = import.meta.env.BASE_URL || '/';
           const response = await fetch(`${baseUrl}data/item-names.json`);
           if (response.ok) {
             const names = (await response.json()) as string[];
-            const simplifiedNames = names.map((name: string) => simplifyItemName(name));
-            const filteredSimplified = simplifiedNames.filter((simplified) => {
-              const isMinionRoman = /minion\s+[ivxlcdm]+$/i.test(simplified);
-              return !isMinionRoman;
-            });
-            const uniqueNames = Array.from(new Set(filteredSimplified)).sort();
+            const filtered = names.filter(
+              (name) => !name.includes('%') && !name.toLowerCase().includes('booster cookie')
+            );
+            const simplified = filtered.map((name: string) => simplifyItemName(name));
+            const uniqueNames = Array.from(new Set(simplified)).sort();
             setItemNames(uniqueNames);
           }
         } catch {
           // Silently fail
-        }
-      } else {
-        try {
-          const itemsResponse = await fetch('https://api.hypixel.net/resources/skyblock/items');
-          if (!itemsResponse.ok) throw new Error('Failed to fetch items');
-          const itemsData = await itemsResponse.json();
-          if (!itemsData.success) throw new Error('Items API failed');
-
-          const bazaarResponse = await fetch('https://api.hypixel.net/skyblock/bazaar');
-          if (!bazaarResponse.ok) throw new Error('Failed to fetch bazaar');
-          const bazaarData = await bazaarResponse.json();
-          if (!bazaarData.success) throw new Error('Bazaar API failed');
-
-          const bazaarIds = new Set(Object.keys(bazaarData.products));
-
-          interface HypixelItem {
-            id: string;
-            name: string;
-            can_auction?: boolean;
-          }
-          const auctionableItems = (itemsData.items as HypixelItem[]).filter(
-            (item) => item.can_auction !== false && !bazaarIds.has(item.id)
-          );
-
-          const names = auctionableItems.map((item) => item.name);
-          const filteredNames = names.filter((name: string) => {
-            const hasPercent = name.includes('%');
-            const simplified = simplifyItemName(name);
-            const isMinionRoman = /minion\s+[ivxlcdm]+$/i.test(simplified);
-            return !hasPercent && !isMinionRoman;
-          });
-          const simplifiedNames = filteredNames.map((name: string) => simplifyItemName(name));
-          const uniqueNames = Array.from(new Set(simplifiedNames)).sort() as string[];
-          setItemNames(uniqueNames);
-        } catch {
-          try {
-            const baseUrl = import.meta.env.BASE_URL || '/';
-            const response = await fetch(`${baseUrl}data/item-names.json`);
-            if (response.ok) {
-              const names = (await response.json()) as string[];
-              const filteredNames = names.filter((name) => {
-                const lower = name.toLowerCase();
-                const hasPercent = name.includes('%');
-                const hasMinion = lower.includes('minion');
-                const hasRoman = /[IVXLCDM]+/.test(name);
-                return !hasPercent && !(hasMinion && hasRoman);
-              });
-              const simplifiedNames = filteredNames.map((name: string) => simplifyItemName(name));
-              const uniqueNames = Array.from(new Set(simplifiedNames)).sort();
-              setItemNames(uniqueNames);
-            }
-          } catch {
-            // Silently fail
-          }
         }
       }
     };
@@ -177,29 +155,41 @@ export function AuctionsPage() {
    * Fetches and displays the auctioneer's username when searching by auctioneer.
    */
   useEffect(() => {
-    if (searchMode === 'auctioneer' && appliedFilter && !shouldUseMock()) {
+    const modeChanged = prevSearchModeRef.current !== searchMode;
+    const filterChanged = prevAppliedFilterRef.current !== appliedFilter;
+
+    prevSearchModeRef.current = searchMode;
+    prevAppliedFilterRef.current = appliedFilter;
+
+    if (searchMode === 'auctioneer' && appliedFilter) {
       const targetUUID = resolvedUUID || appliedFilter;
       getUsername(targetUUID)
         .then((name) => setAuctioneerName(name))
         .catch(() => setAuctioneerName(null));
-    } else {
-      setAuctioneerName(null);
+    } else if (modeChanged || filterChanged) {
+      queueMicrotask(() => setAuctioneerName(null));
     }
   }, [searchMode, appliedFilter, resolvedUUID]);
 
   /**
    * Fetches usernames for all auctioneers in the filtered results.
    * Uses rate limiting to avoid overwhelming the API.
+   * Fetches ALL unique auctioneers before applying filters.
    */
   useEffect(() => {
-    if (!appliedFilter || shouldUseMock()) {
-      setUsernameMap(new Map());
+    const filterChanged = prevAppliedFilterForMapRef.current !== appliedFilter;
+    prevAppliedFilterForMapRef.current = appliedFilter;
+
+    if (!appliedFilter) {
+      if (filterChanged) {
+        queueMicrotask(() => setUsernameMap(new Map()));
+      }
       return;
     }
 
-    let auctions = auctionsData || [];
-    auctions = auctions.filter((auction) => (showBin ? auction.bin : !auction.bin));
+    const auctions = auctionsData || [];
 
+    // Get filtered auctions based on search mode (NO BIN filter yet)
     let filtered: Auction[];
     if (searchMode === 'item') {
       filtered = auctions.filter((auction) =>
@@ -210,6 +200,7 @@ export function AuctionsPage() {
       filtered = auctions.filter((auction) => auction.auctioneer === targetUUID);
     }
 
+    // Get ALL unique auctioneers from filtered results (before BIN filter)
     const uniqueAuctioneers = new Set(filtered.map((a) => a.auctioneer));
     const promises = Array.from(uniqueAuctioneers).map((uuid) =>
       limit(() => getUsername(uuid).catch(() => null))
@@ -222,38 +213,55 @@ export function AuctionsPage() {
       });
       setUsernameMap(map);
     });
-  }, [appliedFilter, searchMode, showBin, resolvedUUID, auctionsData, limit]);
+  }, [appliedFilter, searchMode, resolvedUUID, auctionsData, limit]);
 
   /**
    * Filters and sorts auctions based on search criteria.
-   * Results are sorted by price (lowest first) and include auctioneer names.
+   * Results are sorted by selected mode and include auctioneer names.
    */
   const filteredAuctions = useMemo(() => {
     if (!appliedFilter) return [];
 
     let auctions = auctionsData || [];
-    auctions = auctions.filter((auction) => (showBin ? auction.bin : !auction.bin));
+
+    // Apply BIN filter
+    if (binFilter === 'bin') {
+      auctions = auctions.filter((auction) => auction.bin);
+    } else if (binFilter === 'non-bin') {
+      auctions = auctions.filter((auction) => !auction.bin);
+    }
 
     const getPrice = (auction: Auction) =>
       auction.bin
         ? auction.starting_bid
         : auction.bids.length > 0
           ? auction.bids[auction.bids.length - 1].amount
-          : Infinity;
+          : auction.starting_bid;
 
+    let filtered: Auction[];
     if (searchMode === 'item') {
-      return auctions
-        .filter((auction) => auction.item_name.toLowerCase().includes(appliedFilter.toLowerCase()))
-        .sort((a, b) => getPrice(a) - getPrice(b))
-        .map((a) => ({ ...a, auctioneerName: usernameMap.get(a.auctioneer) || undefined }));
+      filtered = auctions.filter((auction) =>
+        auction.item_name.toLowerCase().includes(appliedFilter.toLowerCase())
+      );
     } else {
       const targetUUID = resolvedUUID || appliedFilter;
-      return auctions
-        .filter((auction) => auction.auctioneer === targetUUID)
-        .sort((a, b) => getPrice(a) - getPrice(b))
-        .map((a) => ({ ...a, auctioneerName: usernameMap.get(a.auctioneer) || undefined }));
+      filtered = auctions.filter((auction) => auction.auctioneer === targetUUID);
     }
-  }, [auctionsData, appliedFilter, searchMode, showBin, resolvedUUID, usernameMap]);
+
+    // Apply sorting
+    if (sortMode === 'lowest-price') {
+      filtered.sort((a, b) => getPrice(a) - getPrice(b));
+    } else if (sortMode === 'highest-price') {
+      filtered.sort((a, b) => getPrice(b) - getPrice(a));
+    } else if (sortMode === 'ending-soon') {
+      filtered.sort((a, b) => a.end - b.end);
+    }
+
+    return filtered.map((a) => ({
+      ...a,
+      auctioneerName: usernameMap.get(a.auctioneer) || undefined,
+    }));
+  }, [auctionsData, appliedFilter, searchMode, binFilter, sortMode, resolvedUUID, usernameMap]);
 
   const totalPages = Math.ceil(filteredAuctions.length / ITEMS_PER_PAGE);
 
@@ -439,15 +447,71 @@ export function AuctionsPage() {
             )}
         </div>
         <div className="search-actions">
-          <button
-            onClick={() => {
-              setShowBin(!showBin);
-              setCurrentPage(1);
-            }}
-            className={`search-bin-toggle ${showBin ? 'active' : ''}`}
-          >
-            {showBin ? 'Show Non-BIN only' : 'Show BIN only'}
-          </button>
+          <div className="filter-slider-container">
+            <label className="filter-label">Filter:</label>
+            <div className="slider-toggle-container">
+              <button
+                onClick={() => {
+                  setBinFilter('all');
+                  setCurrentPage(1);
+                }}
+                className={`slider-button ${binFilter === 'all' ? 'active' : ''}`}
+              >
+                All
+              </button>
+              <button
+                onClick={() => {
+                  setBinFilter('bin');
+                  setCurrentPage(1);
+                }}
+                className={`slider-button ${binFilter === 'bin' ? 'active' : ''}`}
+              >
+                BIN Only
+              </button>
+              <button
+                onClick={() => {
+                  setBinFilter('non-bin');
+                  setCurrentPage(1);
+                }}
+                className={`slider-button ${binFilter === 'non-bin' ? 'active' : ''}`}
+              >
+                Non-BIN
+              </button>
+            </div>
+          </div>
+
+          <div className="sort-slider-container">
+            <label className="filter-label">Sort by:</label>
+            <div className="slider-toggle-container">
+              <button
+                onClick={() => {
+                  setSortMode('ending-soon');
+                  setCurrentPage(1);
+                }}
+                className={`slider-button ${sortMode === 'ending-soon' ? 'active' : ''}`}
+              >
+                Ending Soon
+              </button>
+              <button
+                onClick={() => {
+                  setSortMode('lowest-price');
+                  setCurrentPage(1);
+                }}
+                className={`slider-button ${sortMode === 'lowest-price' ? 'active' : ''}`}
+              >
+                Lowest Price
+              </button>
+              <button
+                onClick={() => {
+                  setSortMode('highest-price');
+                  setCurrentPage(1);
+                }}
+                className={`slider-button ${sortMode === 'highest-price' ? 'active' : ''}`}
+              >
+                Highest Price
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       {error && <ErrorMessage message={error} />}
@@ -531,12 +595,17 @@ export function AuctionsPage() {
  * - Stat prefixes (Spicy, Wise, etc.)
  * - Pet level info
  * - Special characters
+ * - Minecraft color codes (§x)
  *
  * @param {string} name - The original item name
  * @returns {string} The simplified item name in lowercase
  */
 function simplifyItemName(name: string): string {
   let simplified = name.toLowerCase().trim();
+
+  // Remove Minecraft color codes (§ followed by any character)
+  simplified = simplified.replace(/§./g, '');
+
   const prefixes = [
     'spicy',
     'shiny',
@@ -565,7 +634,7 @@ function simplifyItemName(name: string): string {
       simplified = simplified.slice(prefix.length + 1);
     }
   });
-  simplified = simplified.replace(/lvl \[lvl \d+\]/g, '').trim();
-  simplified = simplified.replace(/\s*\]$/, '').trim();
+  simplified = simplified.replace(/lvl \[lvl \d+]/g, '').trim();
+  simplified = simplified.replace(/\s*]$/, '').trim();
   return simplified;
 }

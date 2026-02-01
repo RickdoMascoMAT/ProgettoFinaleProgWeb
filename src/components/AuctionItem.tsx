@@ -10,6 +10,9 @@ export function AuctionItem({ auction, onClick }: AuctionItemProps) {
     onClick(auction);
   };
 
+  // Show username if available, otherwise show shortened UUID
+  const displayAuctioneer = auction.auctioneerName || `${auction.auctioneer.substring(0, 8)}...`;
+
   return (
     <div className="auction-item" onClick={handleClick}>
       <h3>{auction.item_name}</h3>
@@ -27,7 +30,7 @@ export function AuctionItem({ auction, onClick }: AuctionItemProps) {
         <strong>Ends on:</strong> {new Date(auction.end).toLocaleString('it-IT')}
       </p>
       <p>
-        <strong>Auctioneer:</strong> {auction.auctioneerName || 'Unknown'}
+        <strong>Auctioneer:</strong> {displayAuctioneer}
       </p>
     </div>
   );

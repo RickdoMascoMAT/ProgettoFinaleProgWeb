@@ -102,7 +102,7 @@ body {
 
 /* ProfilePage styles */
 .favorite-button {
-  margin: 0px 10px 0px 10px;
+  margin: 0 10px 0 10px;
   padding: 10px 20px;
   background-color: #4caf50;
   color: white;
@@ -444,7 +444,6 @@ body {
 
 .search-disabled-banner {
   text-align: center;
-  margin-top: 10px;
   padding: 10px;
   background-color: #4a2c2a;
   border-radius: 8px;
@@ -567,21 +566,6 @@ body {
   background-color: #4caf50;
 }
 
-.search-bin-toggle {
-  padding: 8px 16px;
-  margin: 0 5px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: #333;
-  color: #e0e0e0;
-}
-
-.search-bin-toggle.active {
-  background-color: #4caf50;
-  color: white;
-}
-
 .search-input-container {
   text-align: center;
   position: relative;
@@ -631,6 +615,46 @@ body {
 .search-actions {
   text-align: center;
   margin-top: 10px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-slider-container,
+.sort-slider-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-label {
+  font-weight: bold;
+  color: #e0e0e0;
+}
+
+.slider-toggle-container {
+  display: inline-flex;
+  align-items: center;
+  background-color: #333;
+  border-radius: 20px;
+  padding: 2px;
+}
+
+.slider-button {
+  border: none;
+  border-radius: 18px;
+  padding: 5px 15px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  background-color: transparent;
+  font-size: 14px;
+}
+
+.slider-button.active {
+  background-color: #4caf50;
 }
 
 .loading-message {

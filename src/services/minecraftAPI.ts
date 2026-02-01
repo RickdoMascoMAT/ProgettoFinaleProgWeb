@@ -1,6 +1,6 @@
 import axios from 'axios';
-import type { DisplayName, UUID, Optional } from '../types/index';
-import { shouldUseMock, getMockUUID, getMockUsername } from './mockService';
+import type { DisplayName, UUID, Optional } from '../types';
+import { shouldUseMock, getMockUUID } from './mockService';
 
 const isDev = import.meta.env.DEV;
 const MOJANG_PROXY = '/api';
@@ -44,7 +44,7 @@ export async function getUUID(username: DisplayName): Promise<Optional<UUID>> {
 
 /**
  * Retrieves the username for a Minecraft UUID.
- * Uses PlayerDB API (CORS-friendly).
+ * Uses PlayerDB API (CORS-friendly, no auth required).
  *
  * @param {UUID} uuid - The Minecraft UUID to lookup
  * @returns {Promise<Optional<DisplayName>>} The player's username or null if not found
@@ -54,14 +54,6 @@ export async function getUUID(username: DisplayName): Promise<Optional<UUID>> {
  */
 export async function getUsername(uuid: UUID): Promise<Optional<DisplayName>> {
   try {
-    if (shouldUseMock()) {
-      const mockUsername = getMockUsername(uuid);
-      if (mockUsername) {
-        return mockUsername;
-      }
-      return null;
-    }
-
     const uuidWithDashes = uuid.includes('-')
       ? uuid
       : uuid.replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, '$1-$2-$3-$4-$5');
