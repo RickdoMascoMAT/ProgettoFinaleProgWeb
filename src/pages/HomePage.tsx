@@ -84,7 +84,9 @@ export function HomePage() {
             language: 'en',
             notifications: true,
           });
-        } catch {}
+        } catch {
+          // Intentionally empty - preferences save is not critical
+        }
 
         setAPIMessage('API key saved successfully!');
         setApiKey('**************');

@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Link } from 'react-router-dom';
 import { ProfilePage } from './pages/ProfilePage.tsx';
 import { HomePage } from './pages/HomePage.tsx';
 import { NotFoundPage } from './pages/NotFoundPage.tsx';
@@ -35,12 +35,12 @@ function AppContent() {
       <aside className="sidebar sidebar-always-visible">
         <h3>Navigation</h3>
         <div className="sidebar-buttons">
-          <a href="/" className="sidebar-link">
+          <Link to="/" className="sidebar-link">
             <button className="form-button sidebar-button sidebar-button-top">Stats Tracker</button>
-          </a>
-          <a href="/auctions" className="sidebar-link">
+          </Link>
+          <Link to="/auctions" className="sidebar-link">
             <button className="form-button sidebar-button">Auction House</button>
-          </a>
+          </Link>
         </div>
       </aside>
 

@@ -4,7 +4,7 @@ import { useProfiles } from '../hooks/useProfiles';
 import LoadingSpinner from '../components/LoadingSpinner.tsx';
 import ErrorMessage from '../components/ErrorMessage.tsx';
 import StatDisplay from '../components/StatDisplay.tsx';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { addFavorite, removeFavorite, getFavorites } from '../services/favoritesApi';
 import { handleApiError } from '../utils/apiErrorHandler';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
@@ -46,13 +46,8 @@ export function ProfilePage() {
     enabled: !!uuid,
   });
 
-  const [isFavorite, setIsFavorite] = useState(uuid ? getFavorites().includes(uuid) : false);
-
-  useEffect(() => {
-    if (uuid) {
-      setIsFavorite(getFavorites().includes(uuid));
-    }
-  }, [uuid]);
+  const getInitialFavoriteState = () => (uuid ? getFavorites().includes(uuid) : false);
+  const [isFavorite, setIsFavorite] = useState(getInitialFavoriteState);
 
   const currentPlayer = passedPlayer || player;
 
@@ -64,10 +59,12 @@ export function ProfilePage() {
 
   const selectedProfile = profiles?.find((p) => p.selected);
 
+  const backIconUrl = `${import.meta.env.BASE_URL}reshot-icon-chevron-arrow-left-circle-XY6MSRE5DN.svg`;
+
   return (
     <>
       <img
-        src="/reshot-icon-chevron-arrow-left-circle-XY6MSRE5DN.svg"
+        src={backIconUrl}
         alt="Back to Home"
         onClick={() => navigate('/')}
         className="back-to-home-button"
