@@ -8,20 +8,12 @@ import { FavoriteItem } from '../components/FavoriteItem';
 import { handleApiError } from '../utils/apiErrorHandler';
 import { validateApiKey } from '../services/hypixelAPI';
 import { shouldUseMock } from '../services/mockService';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Home page component.
  * Main entry point of the application with API key configuration,
  * player search functionality, and favorites management.
- *
- * Features:
- * - Hypixel API key input and validation
- * - Minecraft username search to find players
- * - Display of searched player with navigation to profile
- * - List of favorite players for quick access
- * - Navigation to auctions page
- *
- * @returns {JSX.Element} The home page UI
  */
 export function HomePage() {
   const [username, setUsername] = useState(``);
@@ -36,9 +28,9 @@ export function HomePage() {
   const [apiKeyWarning, setApiKeyWarning] = useState('');
 
   const favorites = getFavorites();
-  const [searchedUUID, setSearchedUUID] = useState<string | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const usingMockData = shouldUseMock();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (APIMessage) {
@@ -101,7 +93,7 @@ export function HomePage() {
 
   /**
    * Handles username search form submission.
-   * Looks up the UUID for the entered username and stores the result.
+   * Looks up the UUID for the entered username and navigates to the profile page.
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -110,8 +102,7 @@ export function HomePage() {
     try {
       const uuid = await getUUID(username);
       if (uuid) {
-        localStorage.setItem('selectedPlayerUUID', uuid);
-        setSearchedUUID(uuid);
+        navigate(`/profile/${username}`, { state: { uuid } });
       } else {
         setUsernameMessage(
           `Player "${username}" not found. Please check the spelling and try again.`
@@ -204,6 +195,7 @@ export function HomePage() {
               aria-label="Minecraft username"
               disabled={!savedKey || isSearching}
             />
+            <div style={{ height: 8 }} />
             <button
               type="submit"
               className="form-button search-button"
@@ -224,12 +216,6 @@ export function HomePage() {
           </div>
         )}
       </form>
-      {searchedUUID && (
-        <div className="searched-player-section">
-          <h3>Searched Player</h3>
-          <FavoriteItem uuid={searchedUUID} />
-        </div>
-      )}
       {favorites.length > 0 && (
         <div className="favorites-section favorites-section-left">
           <h2>Favorite Players</h2>

@@ -6,6 +6,7 @@ import { useState, useMemo, useRef, useEffect } from 'react';
 import type { Auction } from '../types/auctions';
 import { useUUID } from '../hooks/useUUID';
 import { getUsername } from '../services/minecraftAPI';
+import { useLocation } from 'react-router-dom';
 
 import pLimit from 'p-limit';
 
@@ -27,10 +28,16 @@ const MAX_SUGGESTIONS = 10;
  * @returns {JSX.Element} The auctions page UI with search and results
  */
 export function AuctionsPage() {
+  const location = useLocation();
   const { data: auctionsData, error, timeUntilRefresh } = useProgressiveAuctions();
-  const [filterText, setFilterText] = useState<string>('');
-  const [appliedFilter, setAppliedFilter] = useState<string>('');
-  const [searchMode, setSearchMode] = useState<'item' | 'auctioneer'>('item');
+  const navState = (location.state || {}) as { searchMode?: string; filter?: string } | null;
+
+  const [filterText, setFilterText] = useState<string>(() => navState?.filter ?? '');
+  const [appliedFilter, setAppliedFilter] = useState<string>(() => navState?.filter ?? '');
+  const [searchMode, setSearchMode] = useState<'item' | 'auctioneer'>(() =>
+    navState?.searchMode === 'auctioneer' ? 'auctioneer' : 'item'
+  );
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [binFilter, setBinFilter] = useState<'all' | 'bin' | 'non-bin'>('all');
@@ -141,11 +148,7 @@ export function AuctionsPage() {
    * Resolves username to UUID for auctioneer search mode.
    * Only active when searching by auctioneer name (not UUID).
    */
-  const {
-    data: resolvedUUID,
-    isLoading: uuidLoading,
-    error: uuidError,
-  } = useUUID(
+  const { data: resolvedUUID, isLoading: uuidLoading } = useUUID(
     searchMode === 'auctioneer' && appliedFilter && !appliedFilter.includes('-')
       ? appliedFilter
       : ''
@@ -244,7 +247,14 @@ export function AuctionsPage() {
         auction.item_name.toLowerCase().includes(appliedFilter.toLowerCase())
       );
     } else {
-      const targetUUID = resolvedUUID || appliedFilter;
+      // If appliedFilter looks like a UUID (contains dashes), use it directly.
+      // Otherwise (it's a username), only proceed if resolvedUUID is available.
+      const isUuidLike = appliedFilter.includes('-');
+      const targetUUID = isUuidLike ? appliedFilter : resolvedUUID || null;
+      if (!targetUUID) {
+        // Username not yet resolved to UUID: return no results (waiting for resolution)
+        return [];
+      }
       filtered = auctions.filter((auction) => auction.auctioneer === targetUUID);
     }
 
@@ -515,7 +525,6 @@ export function AuctionsPage() {
         </div>
       </div>
       {error && <ErrorMessage message={error} />}
-      {uuidError && <ErrorMessage message={`Failed to resolve username: ${uuidError.message}`} />}
       {uuidLoading &&
         searchMode === 'auctioneer' &&
         appliedFilter &&

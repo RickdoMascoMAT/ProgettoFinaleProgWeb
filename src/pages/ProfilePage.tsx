@@ -127,6 +127,21 @@ export function ProfilePage() {
                   {Object.keys(selectedProfile.members).length} player(s)
                 </p>
               </div>
+
+              <div className="profile-actions">
+                <button
+                  className="form-button"
+                  onClick={() => {
+                    if (username) {
+                      navigate('/auctions', {
+                        state: { searchMode: 'auctioneer', filter: username },
+                      });
+                    }
+                  }}
+                >
+                  Go to Auction House
+                </button>
+              </div>
             </div>
           )}
         </>
