@@ -10,6 +10,7 @@ export interface AuctionsRoot {
 export interface Auction {
   uuid: string;
   auctioneer: string;
+  auctioneerName?: string;
   profile_id: string;
   coop: string[];
   start: number;

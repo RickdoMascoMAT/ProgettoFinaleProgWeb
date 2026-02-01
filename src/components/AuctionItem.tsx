@@ -1,4 +1,3 @@
-import { useUsername } from '../hooks/useUsername';
 import type { Auction } from '../types/auctions';
 
 interface AuctionItemProps {
@@ -7,18 +6,12 @@ interface AuctionItemProps {
 }
 
 export function AuctionItem({ auction, onClick }: AuctionItemProps) {
-  const { data: username, isLoading, error } = useUsername(auction.auctioneer);
-
   const handleClick = () => {
     onClick(auction);
   };
 
   return (
-    <div
-      className="auction-item"
-      style={{ border: '1px solid #ccc', padding: '10px', cursor: 'pointer' }}
-      onClick={handleClick}
-    >
+    <div className="auction-item" onClick={handleClick}>
       <h3>{auction.item_name}</h3>
       <p>
         <strong>Price:</strong>{' '}
@@ -34,8 +27,7 @@ export function AuctionItem({ auction, onClick }: AuctionItemProps) {
         <strong>Ends on:</strong> {new Date(auction.end).toLocaleString('it-IT')}
       </p>
       <p>
-        <strong>Auctioneer:</strong>{' '}
-        {isLoading ? 'Loading...' : error ? 'Unknown' : username || 'Unknown'}
+        <strong>Auctioneer:</strong> {auction.auctioneerName || 'Unknown'}
       </p>
     </div>
   );

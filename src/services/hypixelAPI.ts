@@ -4,7 +4,6 @@ import { shouldUseMock, loadMockData } from './mockService';
 
 const BASE_URL = 'https://api.hypixel.net/v2/';
 
-// Mock endpoint to file mapping (only for authenticated endpoints)
 const MOCK_FILES: Record<string, string> = {
   player: 'player.json',
   'skyblock/profiles': 'profiles.json',
@@ -25,7 +24,6 @@ export async function get(
   params?: Record<string, unknown>,
   authenticated: boolean = false
 ) {
-  // Use mock data only for authenticated endpoints when no API key
   if (authenticated && shouldUseMock()) {
     const mockFile = MOCK_FILES[endpoint];
     if (mockFile) {
@@ -53,7 +51,6 @@ export async function validateApiKey(apiKey: string): Promise<boolean> {
     const response = await axios.get(`${BASE_URL}player`, {
       params: { key: apiKey, uuid: '069a79f444e94726a5befca90e38aaf5' },
     });
-    // Use type guard to validate response structure
     if (isValidApiResponse(response.data)) {
       return response.data.success === true;
     }

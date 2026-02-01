@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { getUUID } from '../services/minecraftAPI.ts';
 import { useApiKey } from '../hooks/useApiKey.ts';
 import ErrorMessage from '../components/ErrorMessage.tsx';
@@ -25,7 +24,6 @@ import { shouldUseMock } from '../services/mockService';
  * @returns {JSX.Element} The home page UI
  */
 export function HomePage() {
-  const navigate = useNavigate();
   const [username, setUsername] = useState(``);
 
   const { setApiKey: saveApiKey, getApiKey, clearApiKey } = useApiKey();
@@ -61,13 +59,16 @@ export function HomePage() {
       if (savedKey) {
         const isValid = await validateApiKey(savedKey);
         if (!isValid) {
-          setApiKeyWarning('Your API key is invalid or expired. Update it to access real data.');
+          clearApiKey();
+          setApiKey('');
+          setApiKeyWarning('Your API key was invalid or expired and has been removed.');
         } else {
           setApiKeyWarning('');
         }
       }
     };
     checkApiKeyValidity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savedKey]);
 
   const handleApiKeySubmit = async (e: React.FormEvent) => {
@@ -83,9 +84,7 @@ export function HomePage() {
             language: 'en',
             notifications: true,
           });
-        } catch (error) {
-          console.error('Failed to save preferences:', error);
-        }
+        } catch {}
 
         setAPIMessage('API key saved successfully!');
         setApiKey('**************');
@@ -124,25 +123,16 @@ export function HomePage() {
   return (
     <>
       <div className="app-header">
-        <h1 style={{ margin: 0 }}>Hypixel SkyBlock Stats Tracker</h1>
+        <h1 className="page-title">Hypixel SkyBlock Stats Tracker</h1>
       </div>
-      <p style={{ textAlign: 'left', marginBottom: '20px' }}>
+      <p className="intro-text">
         Welcome! Enter your Hypixel API key to access real player data, or click on the DEV player
         below to see sample data.
       </p>
 
       {usingMockData && (
-        <div
-          style={{
-            textAlign: 'left',
-            marginBottom: '20px',
-            padding: '10px',
-            backgroundColor: '#2d4a3e',
-            borderRadius: '8px',
-            border: '1px solid #4ade80',
-          }}
-        >
-          <p style={{ margin: 0, color: '#4ade80' }}>
+        <div className="demo-mode-banner">
+          <p>
             <strong>Demo Mode:</strong> No API key configured. Click on{' '}
             <strong>Rick_doMasco (DEV)</strong> below to view sample data.
           </p>
@@ -150,12 +140,12 @@ export function HomePage() {
       )}
 
       <form onSubmit={handleApiKeySubmit}>
-        <div style={{ textAlign: 'left', marginBottom: '10px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+        <div className="api-key-section">
+          <label className="api-key-label">
             Hypixel API Key:
             <br />
           </label>
-          <label style={{ display: 'block', marginBottom: '15px' }}>
+          <label className="api-key-sublabel">
             Use the&nbsp;
             <a href="https://developer.hypixel.net" target="_blank" rel="noopener noreferrer">
               Official website
@@ -179,8 +169,7 @@ export function HomePage() {
           {savedKey && (
             <button
               type="button"
-              className="form-button"
-              style={{ marginLeft: '10px', backgroundColor: '#dc3545' }}
+              className="form-button clear-button"
               onClick={() => {
                 clearApiKey();
                 setApiKey('');
@@ -199,58 +188,49 @@ export function HomePage() {
       </form>
       <hr />
       <form onSubmit={handleSubmit}>
-        <div className="search-form" style={{ justifyContent: 'flex-start' }}>
-          <div style={{ textAlign: 'left' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-              Minecraft Username:
-            </label>
+        <div className="search-form search-form-centered">
+          <div>
+            <label className="api-key-label">Minecraft Username:</label>
             <input
               type="text"
-              className="form-input"
+              className="form-input search-input-large"
               placeholder="E.g. Notch"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               aria-label="Minecraft username"
+              disabled={!savedKey || isSearching}
             />
             <button
               type="submit"
-              className="form-button"
-              disabled={isSearching || !username.trim()}
-              aria-label="Search for player"
+              className="form-button search-button"
+              disabled={!savedKey || isSearching || !username.trim()}
             >
-              {isSearching ? 'Searching...' : 'Search Player'}
+              {isSearching ? 'Searching...' : 'Search'}
             </button>
           </div>
-          {usernameMessage &&
-            (usernameMessage.toLowerCase().includes('success') ? (
-              <SuccessMessage message={usernameMessage} />
-            ) : (
-              <ErrorMessage message={usernameMessage} />
-            ))}
         </div>
+        {usingMockData && (
+          <div className="search-disabled-banner">
+            <p>
+              <strong>Player search disabled</strong>
+              <br />
+              Configure an API key to search for real players.
+            </p>
+          </div>
+        )}
       </form>
-      <div style={{ textAlign: 'left', marginTop: '20px' }}>
-        <button
-          onClick={() => navigate('/auctions')}
-          className="form-button"
-          aria-label="View Auctions House"
-        >
-          View Auctions House
-        </button>
-      </div>
       {searchedUUID && (
-        <div className="searched-player-section" style={{ textAlign: 'left', marginTop: '20px' }}>
+        <div className="searched-player-section">
           <h3>Searched Player</h3>
           <FavoriteItem uuid={searchedUUID} />
         </div>
       )}
       {favorites.length > 0 && (
-        <div className="favorites-section" style={{ textAlign: 'left' }}>
+        <div className="favorites-section favorites-section-left">
           <h2>Favorite Players</h2>
           <ul className="favorites-list">
-            {favorites.map((uuid) => (
-              <FavoriteItem key={uuid} uuid={uuid} />
-            ))}
+            <FavoriteItem key={favorites[0]} uuid={favorites[0]} />
+            {savedKey && favorites.slice(1).map((uuid) => <FavoriteItem key={uuid} uuid={uuid} />)}
           </ul>
         </div>
       )}

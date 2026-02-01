@@ -9,6 +9,8 @@ export interface PlayerCardProps {
     cute_name: string;
     [key: string]: any;
   };
+  onToggleFavorite?: () => void;
+  isFavorite?: boolean;
 }
 
 export interface Player {
@@ -1801,24 +1803,6 @@ export interface Walls3 {
   squid_wither_damage_standard: number;
   squid_wither_kills: number;
   squid_wither_kills_standard: number;
-  sword_crafted: number;
-  sword_crafted_standard: number;
-  time_played: number;
-  time_played_standard: number;
-  total_deaths: number;
-  total_deaths_standard: number;
-  total_final_kills: number;
-  total_final_kills_standard: number;
-  total_kills: number;
-  total_kills_standard: number;
-  treasures_found: number;
-  treasures_found_standard: number;
-  wins: number;
-  wins_standard: number;
-  wither_damage: number;
-  wither_damage_standard: number;
-  wither_kills: number;
-  wither_kills_standard: number;
 }
 
 export interface Classes {

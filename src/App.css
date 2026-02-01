@@ -301,3 +301,387 @@ body {
   height: 40px;
   animation: spin 1s linear infinite;
 }
+
+/* App Layout */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding-bottom: 60px;
+  padding-left: 0;
+}
+
+/* Sidebar Always Visible */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 100vh;
+  background-color: #1a1a1a;
+  border-right: 1px solid #333;
+  padding: 20px 10px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar h3 {
+  margin-bottom: 20px;
+  color: #e0e0e0;
+}
+
+.sidebar-buttons {
+  width: 100%;
+}
+
+.sidebar-link {
+  text-decoration: none;
+  display: block;
+}
+
+.sidebar-button {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.sidebar-button-top {
+  margin-bottom: 10px;
+}
+
+/* Footer */
+.app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 10px 0;
+  border-top: 1px solid #333;
+  color: #888;
+  font-size: 0.9em;
+  background-color: #1a1a1a;
+  z-index: 1000;
+  transition: left 0.3s;
+}
+
+.app-footer p {
+  margin: 0;
+}
+
+.app-footer .footer-subtitle {
+  margin: 4px 0 0 0;
+  font-size: 0.85em;
+}
+
+/* HomePage Styles */
+.page-title {
+  margin: 0;
+}
+
+.intro-text {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.demo-mode-banner {
+  text-align: left;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #2d4a3e;
+  border-radius: 8px;
+  border: 1px solid #4ade80;
+}
+
+.demo-mode-banner p {
+  margin: 0;
+  color: #4ade80;
+}
+
+.api-key-section {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.api-key-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.api-key-sublabel {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.clear-button {
+  margin-left: 10px;
+  background-color: #dc3545;
+}
+
+.search-form-centered {
+  justify-content: center;
+  text-align: center;
+}
+
+.search-input-large {
+  min-width: 300px;
+  font-size: 16px;
+}
+
+.search-button {
+  margin-left: 10px;
+}
+
+.search-disabled-banner {
+  text-align: center;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #4a2c2a;
+  border-radius: 8px;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  max-width: 400px;
+  margin: 10px auto;
+}
+
+.search-disabled-banner p {
+  margin: 0;
+}
+
+.searched-player-section {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.favorites-section-left {
+  text-align: left;
+}
+
+/* ProfilePage Styles */
+.back-to-home-button {
+  position: fixed;
+  left: 230px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* PlayerCard Styles */
+.player-name-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.player-name-centered {
+  text-align: center;
+}
+
+.favorite-star-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+}
+
+.favorite-star-button.favorited {
+  color: #ffd700;
+}
+
+.favorite-star-button.not-favorited {
+  color: #ccc;
+}
+
+/* FavoriteItem Styles */
+.dev-badge {
+  margin-left: 8px;
+  padding: 2px 6px;
+  background-color: #7c3aed;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 0.7em;
+  font-weight: bold;
+}
+
+/* AuctionsPage Styles */
+.auction-header-text {
+  font-size: 12px;
+  color: #888;
+  text-align: center;
+}
+
+.auction-intro {
+  margin-bottom: 20px;
+  color: #ccc;
+}
+
+.auction-controls {
+  margin-bottom: 20px;
+}
+
+.search-mode-selector {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.search-mode-label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.search-mode-toggle-container {
+  display: inline-flex;
+  align-items: center;
+  background-color: #333;
+  border-radius: 20px;
+  padding: 2px;
+}
+
+.search-mode-button {
+  border: none;
+  border-radius: 18px;
+  padding: 5px 15px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  background-color: transparent;
+}
+
+.search-mode-button.active {
+  background-color: #4caf50;
+}
+
+.search-bin-toggle {
+  padding: 8px 16px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #333;
+  color: #e0e0e0;
+}
+
+.search-bin-toggle.active {
+  background-color: #4caf50;
+  color: white;
+}
+
+.search-input-container {
+  text-align: center;
+  position: relative;
+}
+
+.auction-search-input {
+  min-width: 400px;
+  font-size: 16px;
+}
+
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  width: 400px;
+}
+
+.suggestion-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.suggestion-item.selected {
+  background-color: #4a4a4a;
+}
+
+.suggestion-item:not(.selected) {
+  background-color: transparent;
+}
+
+.no-suggestions-item {
+  padding: 8px 12px;
+  text-align: center;
+  color: #888;
+}
+
+.search-actions {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.loading-message {
+  text-align: center;
+  padding: 20px;
+  color: #ccc;
+}
+
+.no-results-message {
+  text-align: center;
+  padding: 40px;
+  color: #888;
+}
+
+.auctions-results {
+  margin-top: 20px;
+}
+
+.results-header {
+  margin-bottom: 10px;
+}
+
+.auctions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.pagination-controls {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* NotFoundPage Styles */
+.not-found-container {
+  text-align: center;
+  padding: 50px;
+}
+
+/* AuctionItem Styles */
+.auction-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  cursor: pointer;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.auction-item:hover {
+  background-color: #333;
+}

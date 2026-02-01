@@ -37,21 +37,7 @@ export function FavoriteItem({ uuid }: FavoriteItemProps) {
       />
       <span className="favorite-name">
         {player.displayname}
-        {isDevPlayer && (
-          <span
-            style={{
-              marginLeft: '8px',
-              padding: '2px 6px',
-              backgroundColor: '#7c3aed',
-              color: '#fff',
-              borderRadius: '4px',
-              fontSize: '0.7em',
-              fontWeight: 'bold',
-            }}
-          >
-            DEV
-          </span>
-        )}
+        {isDevPlayer && <span className="dev-badge">DEV</span>}
       </span>
       <button
         onClick={() => {

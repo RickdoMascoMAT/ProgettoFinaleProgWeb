@@ -6,7 +6,7 @@ const API_REFRESH_INTERVAL = 60000;
 const INITIAL_BUFFER = 2000;
 const BUFFER_INCREMENT = 100;
 const BUFFER_STORAGE_KEY = 'auctionBufferMs';
-const MAX_RETRIES = 3;
+const MAX_RETRIES = 5;
 
 function getStoredBuffer(): number {
   const stored = localStorage.getItem(BUFFER_STORAGE_KEY);
@@ -57,13 +57,11 @@ export function useProgressiveAuctions() {
         if (newLastUpdated === lastUpdatedRef.current) {
           bufferRef.current = Math.min(bufferRef.current + BUFFER_INCREMENT, 10000);
           setStoredBuffer(bufferRef.current);
-          console.debug(`[Auctions] Buffer increased to ${bufferRef.current}ms`);
           setIsLoading(false);
           return;
         } else {
           bufferRef.current = Math.max(bufferRef.current - BUFFER_INCREMENT, 500);
           setStoredBuffer(bufferRef.current);
-          console.debug(`[Auctions] Buffer reduced to ${bufferRef.current}ms`);
         }
       }
 
@@ -81,6 +79,22 @@ export function useProgressiveAuctions() {
         if (result.status === 'fulfilled') {
           allAuctions.push(...result.value.auctions);
         }
+      }
+
+      const failedPages: number[] = [];
+      results.forEach((result, i) => {
+        if (result.status === 'rejected') {
+          failedPages.push(i + 1);
+        }
+      });
+      if (failedPages.length > 0) {
+        const retryPromises = failedPages.map((page) => fetchPageWithRetry(page));
+        const retryResults = await Promise.allSettled(retryPromises);
+        retryResults.forEach((result) => {
+          if (result.status === 'fulfilled') {
+            allAuctions.push(...result.value.auctions);
+          }
+        });
       }
 
       cacheRef.current = allAuctions;

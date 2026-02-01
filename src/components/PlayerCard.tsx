@@ -53,7 +53,7 @@ function formatNumber(num: number | undefined): string {
  * @param {PlayerCardProps} props - Component props containing player data
  * @returns {JSX.Element} A styled player card with avatar and statistics
  */
-export function PlayerCard({ player }: PlayerCardProps) {
+export function PlayerCard({ player, onToggleFavorite, isFavorite }: PlayerCardProps) {
   const skinUrl = `https://minotar.net/avatar/${player.uuid}/64.png`;
   const rank = getRank(player);
   const rankColor = rankColors[rank] || rankColors['NONE'];
@@ -63,7 +63,18 @@ export function PlayerCard({ player }: PlayerCardProps) {
       <div className="player-card-header">
         <img src={skinUrl} alt={`Face of ${player.displayname}`} className="player-avatar" />
         <div className="player-info">
-          <h2 className="player-name">{player.displayname}</h2>
+          <div className="player-name-container">
+            <h2 className="player-name player-name-centered">{player.displayname}</h2>
+            {onToggleFavorite && (
+              <button
+                onClick={onToggleFavorite}
+                className={`favorite-star-button ${isFavorite ? 'favorited' : 'not-favorited'}`}
+                aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+              >
+                ★
+              </button>
+            )}
+          </div>
           <p className="player-uuid">UUID: {player.uuid}</p>
 
           <div className="stats-section">

@@ -10,7 +10,6 @@ export function getFavorites(): string[] {
   const stored = localStorage.getItem('favorites');
   const favorites = stored ? JSON.parse(stored) : [];
 
-  // Always include dev player for demo (if not already present)
   if (!favorites.includes(DEV_PLAYER_UUID)) {
     return [DEV_PLAYER_UUID, ...favorites];
   }

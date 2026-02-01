@@ -4,7 +4,7 @@ import { useProfiles } from '../hooks/useProfiles';
 import LoadingSpinner from '../components/LoadingSpinner.tsx';
 import ErrorMessage from '../components/ErrorMessage.tsx';
 import StatDisplay from '../components/StatDisplay.tsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { addFavorite, removeFavorite, getFavorites } from '../services/favoritesApi';
 import { handleApiError } from '../utils/apiErrorHandler';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
@@ -48,6 +48,12 @@ export function ProfilePage() {
 
   const [isFavorite, setIsFavorite] = useState(uuid ? getFavorites().includes(uuid) : false);
 
+  useEffect(() => {
+    if (uuid) {
+      setIsFavorite(getFavorites().includes(uuid));
+    }
+  }, [uuid]);
+
   const currentPlayer = passedPlayer || player;
 
   if (uuidLoading || playerLoading || profilesLoading) return <LoadingSpinner />;
@@ -60,29 +66,31 @@ export function ProfilePage() {
 
   return (
     <>
+      <img
+        src="/reshot-icon-chevron-arrow-left-circle-XY6MSRE5DN.svg"
+        alt="Back to Home"
+        onClick={() => navigate('/')}
+        className="back-to-home-button"
+      />
       <h1>Player Statistics</h1>
-      <button onClick={() => navigate('/')} className="form-button back-button">
-        Back to Home
-      </button>
-      {uuid && (
-        <button
-          onClick={() => {
-            if (isFavorite) {
-              removeFavorite(uuid);
-              setIsFavorite(false);
-            } else {
-              addFavorite(uuid);
-              setIsFavorite(true);
-            }
-          }}
-          className={`favorite-button ${isFavorite ? 'favorite' : ''}`}
-        >
-          {isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-        </button>
-      )}
       {currentPlayer ? (
         <>
-          <PlayerCard player={currentPlayer} profile={selectedProfile} />
+          <PlayerCard
+            player={currentPlayer}
+            profile={selectedProfile}
+            onToggleFavorite={() => {
+              if (uuid) {
+                if (isFavorite) {
+                  removeFavorite(uuid);
+                  setIsFavorite(false);
+                } else {
+                  addFavorite(uuid);
+                  setIsFavorite(true);
+                }
+              }
+            }}
+            isFavorite={isFavorite}
+          />
 
           {selectedProfile && (
             <div className="profile-stats">

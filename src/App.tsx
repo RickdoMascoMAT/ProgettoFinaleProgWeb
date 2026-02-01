@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { ProfilePage } from './pages/ProfilePage.tsx';
 import { HomePage } from './pages/HomePage.tsx';
 import { NotFoundPage } from './pages/NotFoundPage.tsx';
@@ -17,48 +17,47 @@ import { AuctionsPage } from './pages/AuctionsPage.tsx';
  *
  * @returns {JSX.Element} The application with routing configured
  */
+
+function AppContent() {
+  const location = useLocation();
+
+  return (
+    <div className="app-container">
+      <main className="main-content">
+        <Routes key={location.pathname}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/profile/:username" element={<ProfilePage />} />
+          <Route path="/auctions" element={<AuctionsPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </main>
+
+      <aside className="sidebar sidebar-always-visible">
+        <h3>Navigation</h3>
+        <div className="sidebar-buttons">
+          <a href="/" className="sidebar-link">
+            <button className="form-button sidebar-button sidebar-button-top">Stats Tracker</button>
+          </a>
+          <a href="/auctions" className="sidebar-link">
+            <button className="form-button sidebar-button">Auction House</button>
+          </a>
+        </div>
+      </aside>
+
+      <footer className="app-footer">
+        <p>Hypixel SkyBlock Stats Tracker - Riccardo Mascotto - 2026</p>
+        <p className="footer-subtitle">Made for UF07WEB Exam</p>
+      </footer>
+    </div>
+  );
+}
+
 function App() {
   const basename = import.meta.env.BASE_URL;
 
   return (
     <BrowserRouter basename={basename}>
-      <div
-        className="app-container"
-        style={{
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-        }}
-      >
-        <main style={{ flex: 1, paddingBottom: '60px' }}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/profile/:username" element={<ProfilePage />} />
-            <Route path="/auctions" element={<AuctionsPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </main>
-
-        <footer
-          style={{
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            textAlign: 'center',
-            padding: '10px 0',
-            borderTop: '1px solid #333',
-            color: '#888',
-            fontSize: '0.9em',
-            backgroundColor: '#1a1a1a',
-            zIndex: 1000,
-          }}
-        >
-          <p style={{ margin: 0 }}>Hypixel SkyBlock Stats Tracker - Riccardo Mascotto - 2026</p>
-          <p style={{ margin: '4px 0 0 0', fontSize: '0.85em' }}>Made for UF07WEB Exam</p>
-        </footer>
-      </div>
+      <AppContent />
     </BrowserRouter>
   );
 }

@@ -3,7 +3,6 @@
  * Enables using local JSON files instead of real API calls when no API key is set.
  */
 
-// Dev player UUID (shown as favorite by default for demo purposes)
 export const DEV_PLAYER_UUID = 'b6cf1077a3d848249929accc94fcbe83';
 export const DEV_PLAYER_NAME = 'Rick_doMasco';
 
@@ -28,13 +27,11 @@ export async function loadMockData<T>(filename: string): Promise<T> {
   return response.json();
 }
 
-// Mock UUID mapping for known players
 const MOCK_UUIDS: Record<string, string> = {
   rick_domasco: 'b6cf1077a3d848249929accc94fcbe83',
   notch: '069a79f444e94726a5befca90e38aaf5',
 };
 
-// Reverse mapping for UUID to username
 const MOCK_USERNAMES: Record<string, string> = Object.fromEntries(
   Object.entries(MOCK_UUIDS).map(([name, uuid]) => [uuid, name])
 );

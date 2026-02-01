@@ -28,11 +28,14 @@ dist-ssr
 .env.local
 .env.*.local
 
-# API data downloads
-data/
+# API data downloads (root level only, not public/data/)
+/data/
 
 # Development scripts
 download-data.*
 src/downloadHypixel.ts
 src/scripts/
 
+# Planning documents
+plan.MD
+plan.md
