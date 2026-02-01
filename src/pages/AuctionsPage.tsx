@@ -142,13 +142,17 @@ export function AuctionsPage() {
 
   /**
    * Generates autocomplete suggestions based on current search mode and filter text.
-   * Shows recent searches when input is empty, otherwise filters item names.
+   * Shows recent searches when input is empty, otherwise filters item names or recent auctioneers.
    */
   const suggestions = useMemo(() => {
     if (filterText.length === 0) {
       return recentSearches[searchMode].slice(0, MAX_SUGGESTIONS);
-    } else if (filterText.length >= 2 && searchMode === 'item') {
+    } else if (searchMode === 'item' && filterText.length >= 1) {
       return itemNames
+        .filter((name) => name.toLowerCase().includes(filterText.toLowerCase()))
+        .slice(0, MAX_SUGGESTIONS);
+    } else if (searchMode === 'auctioneer' && filterText.length >= 1) {
+      return recentSearches.auctioneer
         .filter((name) => name.toLowerCase().includes(filterText.toLowerCase()))
         .slice(0, MAX_SUGGESTIONS);
     }
@@ -414,24 +418,25 @@ export function AuctionsPage() {
             className="form-input auction-search-input"
             autoComplete="off"
           />
-          {showSuggestions && (
-            <ul ref={suggestionsRef} className="suggestions-dropdown">
-              {suggestions.length > 0 ? (
-                suggestions.map((name, index) => (
-                  <li
-                    key={name}
-                    onClick={() => handleSelectSuggestion(name)}
-                    className={`suggestion-item ${index === selectedIndex ? 'selected' : ''}`}
-                    onMouseEnter={() => setSelectedIndex(index)}
-                  >
-                    {name}
-                  </li>
-                ))
-              ) : (
-                <li className="no-suggestions-item">No suggestions</li>
-              )}
-            </ul>
-          )}
+          {showSuggestions &&
+            (suggestions.length > 0 || (searchMode === 'item' && filterText.length >= 1)) && (
+              <ul ref={suggestionsRef} className="suggestions-dropdown">
+                {suggestions.length > 0
+                  ? suggestions.map((name, index) => (
+                      <li
+                        key={name}
+                        onClick={() => handleSelectSuggestion(name)}
+                        className={`suggestion-item ${index === selectedIndex ? 'selected' : ''}`}
+                        onMouseEnter={() => setSelectedIndex(index)}
+                      >
+                        {name}
+                      </li>
+                    ))
+                  : searchMode === 'item' && (
+                      <li className="no-suggestions-item">No suggestions</li>
+                    )}
+              </ul>
+            )}
         </div>
         <div className="search-actions">
           <button
@@ -465,7 +470,7 @@ export function AuctionsPage() {
           <h2>
             {searchMode === 'item'
               ? 'Item'
-              : `Auctioneer ${auctioneerName ? `(${auctioneerName})` : ''}`}{' '}
+              : `Auctioneer ${auctioneerName ? `(${auctioneerName}) ` : ''}`}{' '}
             Auctions - Results: {filteredAuctions.length.toLocaleString('it-IT')}
           </h2>
 

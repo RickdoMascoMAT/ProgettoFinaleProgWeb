@@ -106,14 +106,16 @@ export function HomePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSearching(true);
+    setUsernameMessage('');
     try {
       const uuid = await getUUID(username);
       if (uuid) {
         localStorage.setItem('selectedPlayerUUID', uuid);
-        setUsernameMessage('UUID saved successfully!');
         setSearchedUUID(uuid);
       } else {
-        setUsernameMessage('Username not found');
+        setUsernameMessage(
+          `Player "${username}" not found. Please check the spelling and try again.`
+        );
       }
     } catch (error) {
       setUsernameMessage(handleApiError(error));
@@ -211,6 +213,7 @@ export function HomePage() {
             </button>
           </div>
         </div>
+        {usernameMessage && <ErrorMessage message={usernameMessage} />}
         {usingMockData && (
           <div className="search-disabled-banner">
             <p>
