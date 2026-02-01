@@ -12,7 +12,6 @@ export interface Auction {
   auctioneer: string;
   auctioneerName?: string;
   profile_id: string;
-  coop: string[];
   start: number;
   end: number;
   item_name: string;

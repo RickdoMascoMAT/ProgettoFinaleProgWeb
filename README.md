@@ -18,6 +18,33 @@ This application allows users to:
 - Item autocomplete with intelligent filtering (removes % items, bazaar items, Booster Cookie)
 - Click on auction to copy /viewauction command to clipboard
 
+## How to Use (Quick Guide)
+
+### Demo Mode (No API Key Required)
+
+1. Open the app at the [demo link](https://rickdomascomat.github.io/ProgettoFinaleProgWeb/)
+2. On the home page, click on **Rick_doMasco (DEV)** in the favorites section
+3. View the sample player profile with SkyBlock statistics
+4. Click **"Go to Auction House"** to see the player's auctions
+
+### Auction House
+
+1. Navigate to **Auction House** from the sidebar
+2. Choose search mode: **Item** or **Auctioneer**
+3. Type in the search bar (autocomplete available for items)
+4. Press **Enter** to search
+5. Use the **Filter** slider: All / BIN Only / Non-BIN
+6. Use the **Sort** slider: Ending Soon / Lowest Price / Highest Price
+7. Click on any auction to copy the `/viewauction` command
+
+### With API Key (Full Features)
+
+1. Get an API key from [developer.hypixel.net](https://developer.hypixel.net)
+2. Enter it in the **Hypixel API Key** field on the home page
+3. Click **Save API key**
+4. Now you can search for any Minecraft player by username
+5. Add players to favorites by clicking the star button on their profile
+
 ## Tech Stack
 
 - **React 19** - UI Library
