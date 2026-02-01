@@ -314,7 +314,9 @@ body {
 .main-content {
   flex: 1;
   padding-bottom: 60px;
-  padding-left: 0;
+  margin-left: 200px; /* Width of sidebar (180px) + spacing (20px) */
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 /* Sidebar Always Visible */
@@ -361,7 +363,7 @@ body {
 .app-footer {
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: 200px; /* Align with sidebar width + spacing */
   right: 0;
   text-align: center;
   padding: 10px 0;
@@ -370,7 +372,6 @@ body {
   font-size: 0.9em;
   background-color: #1a1a1a;
   z-index: 1000;
-  transition: left 0.3s;
 }
 
 .app-footer p {

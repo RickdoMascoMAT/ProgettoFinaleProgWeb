@@ -469,9 +469,13 @@ export function AuctionsPage() {
         <div className="auctions-results">
           <h2>
             {searchMode === 'item'
-              ? 'Item'
-              : `Auctioneer ${auctioneerName ? `(${auctioneerName}) ` : ''}`}{' '}
-            Auctions - Results: {filteredAuctions.length.toLocaleString('it-IT')}
+              ? `Search results for "${appliedFilter}"`
+              : auctioneerName
+                ? `Auctions by ${auctioneerName}`
+                : `Auctions by ${appliedFilter}`}
+            {' - '}
+            {filteredAuctions.length.toLocaleString('it-IT')} result
+            {filteredAuctions.length !== 1 ? 's' : ''}
           </h2>
 
           {filteredAuctions.length === 0 ? (
